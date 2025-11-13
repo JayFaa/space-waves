@@ -27,9 +27,4 @@ public class PlayerMovement : MonoBehaviour
     {
         _movementInput = value.Get<Vector2>();
     }
-
-    public void OnShoot(InputValue value)
-    {
-        Debug.Log($"Shoot value: {value.Get<float>()}");
-    }
 }
