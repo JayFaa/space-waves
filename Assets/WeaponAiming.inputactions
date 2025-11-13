@@ -1,0 +1,35 @@
+{
+    "version": 1,
+    "name": "WeaponAiming",
+    "maps": [
+        {
+            "name": "Weapon",
+            "id": "f583c7dd-5bbf-441b-b344-17aedb731f73",
+            "actions": [
+                {
+                    "name": "Aim",
+                    "type": "Value",
+                    "id": "a37282d1-d21b-4349-aac2-82917f5df686",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "7d543ef9-6534-4f53-9e88-12967ce5aa2d",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Aim",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
