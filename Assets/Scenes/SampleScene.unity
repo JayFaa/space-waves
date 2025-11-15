@@ -3455,6 +3455,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseEngineThrust: 2000
+  dashDistance: 3
+  dashCooldown: 1
+  shipCollider: {fileID: 1941246313}
 --- !u!4 &2021010235
 Transform:
   m_ObjectHideFlags: 0
