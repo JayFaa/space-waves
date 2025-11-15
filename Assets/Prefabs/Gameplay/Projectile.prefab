@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6933430271132885328}
   m_Layer: 0
   m_Name: Projectile
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -47,6 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2224ba70c8159c44f8ca5c7ea68e7e2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 25
 --- !u!135 &8726149532459208617
 SphereCollider:
   m_ObjectHideFlags: 0

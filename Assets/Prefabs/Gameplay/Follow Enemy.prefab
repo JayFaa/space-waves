@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 6453772381483502033}
   m_Layer: 0
   m_Name: Follow Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -50,6 +50,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+  hasShield: 0
+  maxShield: 0
+  shieldRegenDelay: 0
+  shieldRegenRate: 0
 --- !u!114 &6707631052566051253
 MonoBehaviour:
   m_ObjectHideFlags: 0
