@@ -13,8 +13,7 @@ public class Projectile : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        EnemyHealth enemyHealth = other.GetComponent<EnemyHealth>();
-        if (enemyHealth != null)
+        if (other.CompareTag("Enemy") && other.TryGetComponent(out Health enemyHealth))
         {
             enemyHealth.TakeDamage(damage);
         }

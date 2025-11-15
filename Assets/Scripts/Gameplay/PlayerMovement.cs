@@ -27,4 +27,25 @@ public class PlayerMovement : MonoBehaviour
     {
         _movementInput = value.Get<Vector2>();
     }
+
+    private void OnCollisionEnter(Collision other) {
+        if (other.gameObject.CompareTag("Enemy")) {
+
+            // Simple bounce effect
+            Vector3 bounceDirection = (transform.position - other.transform.position).normalized;
+            rb.AddForce(bounceDirection * 10f, ForceMode.Impulse);
+
+            // Deal collision damage to enemy
+            if (other.gameObject.TryGetComponent(out Health enemyHealth)) {
+                enemyHealth.TakeDamage(100); // Deal damage to the enemy on collision
+            }
+
+            // Deal collision damage to player
+            if (TryGetComponent(out Health playerHealth)) {
+                playerHealth.TakeDamage(20); // Player takes damage on collision
+            } else {
+                Debug.LogWarning("Player does not have a Health component!");
+            }
+        }
+    }
 }
