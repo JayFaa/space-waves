@@ -6,12 +6,15 @@ public class PlayerMovement : MonoBehaviour
 {
     // Configurable properties
     [SerializeField] float baseEngineThrust = 50f;
+    [SerializeField] float dashDistance = 2f;
+    [SerializeField] SphereCollider shipCollider;
 
     // Cached references
     Rigidbody rb;
 
     // Internal fields
     private Vector2 _movementInput;
+    private Vector2 _mostRecentMovementInput;
 
     void Awake()
     {
@@ -25,7 +28,41 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnMove(InputValue value)
     {
+        // Set actual current movement input
         _movementInput = value.Get<Vector2>();
+
+        // Keep track of most recent non-zero movement input
+        if (_movementInput != Vector2.zero)
+        {
+            _mostRecentMovementInput = _movementInput;
+        }
+    }
+
+    public void OnDash(InputValue value)
+    {
+        if (value.isPressed)
+        {
+            Vector3 dashDirection = new Vector3(_mostRecentMovementInput.x, 0, _mostRecentMovementInput.y).normalized;
+            if (dashDirection != Vector3.zero)
+            {
+                Dash(dashDirection);
+            }
+        }
+    }
+
+    private void Dash(Vector3 direction)
+    {
+        // Raycast ship collider in the dash direction to check for collisions
+        if (Physics.SphereCast(transform.position, shipCollider.radius, direction, out RaycastHit hit, dashDistance))
+        {
+            // If we hit something, dash only up to the hit point
+            rb.MovePosition(transform.position + direction * hit.distance);
+        }
+        else
+        {
+            // No collision, dash full distance
+            rb.MovePosition(transform.position + direction * dashDistance);
+        }
     }
 
     private void OnCollisionEnter(Collision other) {
