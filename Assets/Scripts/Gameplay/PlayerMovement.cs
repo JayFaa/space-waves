@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
     // Configurable properties
     [SerializeField] float baseEngineThrust = 50f;
     [SerializeField] float dashDistance = 2f;
+    [SerializeField] float dashCooldown = 1f;
     [SerializeField] SphereCollider shipCollider;
 
     // Cached references
@@ -15,10 +16,16 @@ public class PlayerMovement : MonoBehaviour
     // Internal fields
     private Vector2 _movementInput;
     private Vector2 _mostRecentMovementInput;
+    private float _timeSinceLastDash = 0f;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
+    }
+
+    void Update()
+    {
+        _timeSinceLastDash += Time.deltaTime;
     }
 
     void FixedUpdate()
@@ -40,7 +47,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnDash(InputValue value)
     {
-        if (value.isPressed)
+        if (value.isPressed && _timeSinceLastDash >= dashCooldown)
         {
             Vector3 dashDirection = new Vector3(_mostRecentMovementInput.x, 0, _mostRecentMovementInput.y).normalized;
             if (dashDirection != Vector3.zero)
@@ -63,6 +70,9 @@ public class PlayerMovement : MonoBehaviour
             // No collision, dash full distance
             rb.MovePosition(transform.position + direction * dashDistance);
         }
+
+        // Reset dash cooldown
+        _timeSinceLastDash = 0f;
     }
 
     private void OnCollisionEnter(Collision other) {
