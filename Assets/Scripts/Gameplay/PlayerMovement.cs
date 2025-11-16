@@ -44,7 +44,6 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnMove(InputValue value)
     {
-        if (!gameManager.GameIsActive) return;
         // Set actual current movement input
         _movementInput = value.Get<Vector2>();
 
