@@ -11,7 +11,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] SphereCollider shipCollider;
 
     // Cached references
-    Rigidbody rb;
+    private Rigidbody rb;
+    private GameManager gameManager;
 
     // Internal fields
     private Vector2 _movementInput;
@@ -21,20 +22,29 @@ public class PlayerMovement : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        gameManager = FindFirstObjectByType<GameManager>();
     }
 
     void Update()
     {
+        if (!gameManager.GameIsActive) return;
         _timeSinceLastDash += Time.deltaTime;
     }
 
     void FixedUpdate()
     {
+        if (!gameManager.GameIsActive)
+        {
+            rb.linearVelocity = Vector3.zero;
+            return;
+        }
+
         rb.AddForce(baseEngineThrust * Time.fixedDeltaTime * new Vector3(_movementInput.x, 0, _movementInput.y));
     }
 
     public void OnMove(InputValue value)
     {
+        if (!gameManager.GameIsActive) return;
         // Set actual current movement input
         _movementInput = value.Get<Vector2>();
 
@@ -47,6 +57,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnDash(InputValue value)
     {
+        if (!gameManager.GameIsActive) return;
         if (value.isPressed && _timeSinceLastDash >= dashCooldown)
         {
             Vector3 dashDirection = new Vector3(_mostRecentMovementInput.x, 0, _mostRecentMovementInput.y).normalized;

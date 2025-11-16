@@ -15,10 +15,18 @@ public class Health : MonoBehaviour
     [SerializeField] float shieldRegenDelay = 3f;
     [SerializeField] float shieldRegenRate = 5f;
 
+    // Cached references
+    private GameManager gameManager;
+
     private int _currentShield;
     private int _currentHealth;
     private float _shieldRegenAccumulator = 0f;
     private float _timeSinceLastDamage = 0f;
+
+    void Awake()
+    {
+        gameManager = FindFirstObjectByType<GameManager>();
+    }
 
     void Start()
     {
@@ -28,6 +36,9 @@ public class Health : MonoBehaviour
 
     void Update()
     {
+
+        if (!gameManager.GameIsActive) return;
+
         if (hasShield) RechargeShield();
 
         // Expose health and shield for debugging until UI is implemented
