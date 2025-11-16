@@ -1,0 +1,35 @@
+{
+    "version": 1,
+    "name": "SwitchView",
+    "maps": [
+        {
+            "name": "Tech Tree",
+            "id": "c6cd0cd5-ae9d-49a6-be44-df972bf3bb5d",
+            "actions": [
+                {
+                    "name": "Swap",
+                    "type": "Button",
+                    "id": "8cd1d99c-0bf8-451c-8a41-c395b73bbda0",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "be3b04f1-8108-4d02-82d1-3d21ed1dbdfa",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Swap",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

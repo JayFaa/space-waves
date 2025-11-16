@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(RectTransform))]
-public class Node : MonoBehaviour
+public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     [SerializeField] LineRenderer treeConnectionForwardsLR;
     [SerializeField] LineRenderer treeConnectionBackwardsLR;
@@ -204,5 +205,21 @@ public class Node : MonoBehaviour
     {
         float angle = arcPercent * Mathf.PI * 2f;
         return new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * r;
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        Debug.Log($"Pointer entered node! target: {eventData.pointerEnter.name} this: {this.name}");
+        if (this != eventData.pointerEnter.GetComponent<Node>()) Debug.Log("Pointer entered node does not match this node!");
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        Debug.Log("Pointer exited node!");
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        Debug.Log("Pointer clicked node!");
     }
 }

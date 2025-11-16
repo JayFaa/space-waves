@@ -9,12 +9,22 @@ public class Weapon : MonoBehaviour
     [SerializeField] float projectileSpeed = 50f;
     [SerializeField] float shootCooldown = 0.25f;
 
+    // Cached references
+    private GameManager gameManager;
+
     // Internal fields
     private bool _isShooting;
     private float _shootCooldownAccumulator;
 
+    void Awake()
+    {
+        gameManager = FindFirstObjectByType<GameManager>();
+    }
+
     void Update()
     {
+        if (!gameManager.GameIsActive) return;
+        
         Aim();
         Shoot();
     }
