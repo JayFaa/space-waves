@@ -7,6 +7,12 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
+        if (FindAnyObjectByType<GameManager>() != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        DontDestroyOnLoad(gameObject);
         GameIsActive = true;
     }
 

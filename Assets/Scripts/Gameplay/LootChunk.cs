@@ -5,12 +5,14 @@ public class LootChunk : MonoBehaviour
     [SerializeField] float accelerationTowardsMiddle = 2f;
 
     private GameManager gameManager;
+    private ResourceManager resourceManager;
 
     private Rigidbody _rb;
 
     void Awake()
     {
         gameManager = FindFirstObjectByType<GameManager>();
+        resourceManager = FindFirstObjectByType<ResourceManager>();
         _rb = GetComponent<Rigidbody>();
     }
 
@@ -36,6 +38,8 @@ public class LootChunk : MonoBehaviour
 
     public void Collect()
     {
+        resourceManager.AddGold(1);
+        Debug.Log($"Collected loot! Total gold: {resourceManager.GoldCount}");
         Destroy(gameObject);
     }
 }
