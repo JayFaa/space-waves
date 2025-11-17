@@ -2,14 +2,18 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(RectTransform))]
 public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
+    [SerializeField] int price = 10;
+    [SerializeField] int maxPurchases = 1;
     [SerializeField] LineRenderer treeConnectionForwardsLR;
     [SerializeField] LineRenderer treeConnectionBackwardsLR;
     [SerializeField] LineRenderer treeArcLR;
-    [SerializeField] float lineDrawDepth = 0f;
+    [SerializeField] TMPro.TextMeshProUGUI purchaseCountText;
+    [SerializeField] float lineDrawDepth = .1f;
     [SerializeField] List<Node> childNodes;
 
     public int Width { get; private set; }
@@ -20,11 +24,21 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     public float Radius { get; private set; }
     public float TierHeight { get; private set; }
 
+    private ResourceManager resourceManager;
+
     private RectTransform _rTransform;
+    private Image nodeImage;
+    private int _purchaseCount = 0;
+    private bool _locked = true;
 
     void Awake()
     {
+        resourceManager = FindFirstObjectByType<ResourceManager>();
         _rTransform = GetComponent<RectTransform>();
+        nodeImage = GetComponent<Image>();
+        nodeImage.color = Color.gray;
+
+        purchaseCountText.text = GetPurchaseText();
     }
 
     // Positions this node and its children according to the given domain
@@ -220,6 +234,31 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        Debug.Log("Pointer clicked node!");
+        if (!_locked && _purchaseCount < maxPurchases && resourceManager.SpendGold(price))
+        {
+            _purchaseCount += 1;
+            purchaseCountText.text = GetPurchaseText();
+
+            foreach (Node child in childNodes)
+            {
+                child.Unlock();
+            }
+
+            if (_purchaseCount >= maxPurchases)
+            {
+                nodeImage.color = Color.green;
+            }
+        }
+    }
+
+    private string GetPurchaseText()
+    {
+        return $"{_purchaseCount}/{maxPurchases}";
+    }
+
+    public void Unlock()
+    {
+        _locked = false;
+        nodeImage.color = Color.white;
     }
 }

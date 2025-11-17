@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     public void PauseGame()
     {
         GameIsActive = false;
+        StopAllCoroutines();
     }
 
     public void UnpauseGame(float delay)

@@ -31,6 +31,7 @@ public class TechTree : MonoBehaviour
         ParseStructure();
         ArrangeTree();
         DrawTreeLines();
+        UnlockRootNodes();
     }
 
     void LateUpdate()
@@ -100,6 +101,14 @@ public class TechTree : MonoBehaviour
         foreach (Node root in branchRoots)
         {
             root.DrawLines(arcSegments, Vector2.zero);
+        }
+    }
+
+    private void UnlockRootNodes()
+    {
+        foreach (Node root in branchRoots)
+        {
+            root.Unlock();
         }
     }
 }
