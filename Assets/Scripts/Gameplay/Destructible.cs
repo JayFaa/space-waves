@@ -1,9 +1,7 @@
-using NUnit.Framework;
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Health : MonoBehaviour
+public class Destructible : MonoBehaviour
 {
     [SerializeField] int maxHealth = 100;
 
@@ -14,6 +12,9 @@ public class Health : MonoBehaviour
     [SerializeField] int maxShield = 50;
     [SerializeField] float shieldRegenDelay = 3f;
     [SerializeField] float shieldRegenRate = 5f;
+
+    [SerializeField] GameObject lootSpawnerPrefab;
+    [SerializeField] int lootPerKill = 5;
 
     // Cached references
     private GameManager gameManager;
@@ -42,7 +43,7 @@ public class Health : MonoBehaviour
         if (hasShield) RechargeShield();
 
         // Expose health and shield for debugging until UI is implemented
-        if (gameObject.CompareTag("Player")) Debug.Log($"Health: {_currentHealth} | Shield: {_currentShield}");
+        /// if (gameObject.CompareTag("Player")) Debug.Log($"Health: {_currentHealth} | Shield: {_currentShield}");
     }
 
     void RechargeShield()
@@ -63,7 +64,7 @@ public class Health : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, Vector3 direction)
     {
         if (invincibleOnHit && _timeSinceLastDamage < invincibilityWindow) return;
 
@@ -79,15 +80,23 @@ public class Health : MonoBehaviour
         _currentHealth -= damage;
         if (_currentHealth <= 0)
         {
-            Die();
+            Die(direction);
         }
     }
 
-    private void Die()
+    private void Die(Vector3 direction)
     {
         // Reload scene if player dies
         if (gameObject.CompareTag("Player")) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        
+
+        // Spawn loot if an enemy dies
+        if (lootSpawnerPrefab != null)
+        {
+            GameObject lootSpawner = Instantiate(lootSpawnerPrefab, transform.position, Quaternion.LookRotation(direction, Vector3.up));
+            lootSpawner.GetComponent<LootSpawner>().SpawnLoot(lootPerKill);
+            Destroy(lootSpawner, 1f);
+        }
+
         Destroy(gameObject);
     }
 }

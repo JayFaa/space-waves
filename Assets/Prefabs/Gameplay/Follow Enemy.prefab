@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 464907353667425669}
   - component: {fileID: 6707631052566051253}
   - component: {fileID: 798185841048452062}
-  - component: {fileID: 8014791388849992344}
+  - component: {fileID: 4988434057903988976}
   - component: {fileID: 5154462795613694270}
   - component: {fileID: 6453772381483502033}
   m_Layer: 0
@@ -31,9 +31,9 @@ Transform:
   m_GameObject: {fileID: 1396520428261047148}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.02, y: 0, z: 3.73}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
-  m_ConstrainProportionsScale: 1
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -50,10 +50,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+  invincibleOnHit: 0
+  invincibilityWindow: 0.2
   hasShield: 0
   maxShield: 0
   shieldRegenDelay: 0
   shieldRegenRate: 0
+  lootSpawnerPrefab: {fileID: 3708074448457716266, guid: a414675ea5ecdd3419052dac843ed26c, type: 3}
+  lootPerKill: 5
 --- !u!114 &6707631052566051253
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -91,10 +95,10 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 0
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 116
   m_CollisionDetection: 2
---- !u!65 &8014791388849992344
+--- !u!65 &4988434057903988976
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
