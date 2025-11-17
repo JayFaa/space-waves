@@ -30,7 +30,6 @@ public class FollowEnemy : MonoBehaviour
         }
         
         _targetVelocity = (player.transform.position - transform.position).normalized * targetSpeed;
-        Debug.Log(_targetVelocity);
         _rb.linearVelocity = Vector3.Lerp(_rb.linearVelocity, _targetVelocity, 0.1f);
         transform.LookAt(player.transform);
     }

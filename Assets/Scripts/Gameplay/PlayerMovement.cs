@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float dashDistance = 2f;
     [SerializeField] float dashCooldown = 1f;
     [SerializeField] SphereCollider shipCollider;
+    [SerializeField] SphereCollider lootCollider;
 
     // Cached references
     private Rigidbody rb;
@@ -69,17 +70,30 @@ public class PlayerMovement : MonoBehaviour
 
     private void Dash(Vector3 direction)
     {
+
         // Raycast ship collider in the dash direction to check for collisions
-        if (Physics.SphereCast(transform.position, shipCollider.radius, direction, out RaycastHit hit, dashDistance))
+        float distance;
+        if (Physics.SphereCast(transform.position, shipCollider.radius, direction, out RaycastHit hit, dashDistance, ~LayerMask.GetMask("Loot")))
         {
             // If we hit something, dash only up to the hit point
-            rb.MovePosition(transform.position + direction * hit.distance);
+            distance = hit.distance;
         }
         else
         {
             // No collision, dash full distance
-            rb.MovePosition(transform.position + direction * dashDistance);
+            distance = dashDistance;
         }
+
+        RaycastHit[] lootHits = Physics.SphereCastAll(transform.position, lootCollider.radius, direction, distance, LayerMask.GetMask("Loot"));
+        foreach (RaycastHit lootHit in lootHits)
+        {
+            // Destroy loot objects in the dash path
+            if (lootHit.collider.gameObject.TryGetComponent(out LootChunk lootChunk))
+            {
+                lootChunk.Collect();
+            }
+        }
+        rb.MovePosition(transform.position + direction * distance);
 
         // Reset dash cooldown
         _timeSinceLastDash = 0f;
@@ -93,13 +107,13 @@ public class PlayerMovement : MonoBehaviour
             rb.AddForce(bounceDirection * 10f, ForceMode.Impulse);
 
             // Deal collision damage to enemy
-            if (other.gameObject.TryGetComponent(out Health enemyHealth)) {
-                enemyHealth.TakeDamage(100); // Deal damage to the enemy on collision
+            if (other.gameObject.TryGetComponent(out Destructible enemyHealth)) {
+                enemyHealth.TakeDamage(100, -other.contacts[0].normal); // Deal damage to the enemy on collision
             }
 
             // Deal collision damage to player
-            if (TryGetComponent(out Health playerHealth)) {
-                playerHealth.TakeDamage(20); // Player takes damage on collision
+            if (TryGetComponent(out Destructible playerHealth)) {
+                playerHealth.TakeDamage(20, other.contacts[0].normal); // Player takes damage on collision
             } else {
                 Debug.LogWarning("Player does not have a Health component!");
             }

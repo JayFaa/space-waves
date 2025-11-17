@@ -5,17 +5,28 @@ public class Projectile : MonoBehaviour
     [SerializeField] private int damage = 25;
 
     public float Speed { get; set; }
- 
-    void Update()
+
+    private Rigidbody _rb;
+    private GameManager gameManager;
+
+    void Awake()
     {
-        transform.position += Speed * Time.deltaTime * transform.forward;
+        _rb = GetComponent<Rigidbody>();
+        gameManager = FindFirstObjectByType<GameManager>();
     }
 
-    void OnTriggerEnter(Collider other)
+    void FixedUpdate()
     {
-        if (other.CompareTag("Enemy") && other.TryGetComponent(out Health enemyHealth))
+        if (!gameManager.GameIsActive) return;
+
+        _rb.MovePosition(_rb.position + Speed * Time.fixedDeltaTime * transform.forward);
+    }
+
+    void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.CompareTag("Enemy") && other.gameObject.TryGetComponent(out Destructible enemyHealth))
         {
-            enemyHealth.TakeDamage(damage);
+            enemyHealth.TakeDamage(damage, -other.contacts[0].normal);
         }
 
         Destroy(gameObject);

@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - Enemy
+  - Loot
   layers:
   - Default
   - TransparentFX
@@ -13,10 +14,10 @@ TagManager:
   - Water
   - UI
   - Middle Plane
-  - 
-  - 
-  - 
-  - 
+  - Projectile
+  - Loot
+  - LootingArea
+  - Walls
   - 
   - 
   - 
