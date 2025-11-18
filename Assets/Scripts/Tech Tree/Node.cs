@@ -9,6 +9,7 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 {
     [SerializeField] int price = 10;
     [SerializeField] int maxPurchases = 1;
+    [SerializeField] BaseNodeEffect nodeEffect;
     [SerializeField] LineRenderer treeConnectionForwardsLR;
     [SerializeField] LineRenderer treeConnectionBackwardsLR;
     [SerializeField] LineRenderer treeArcLR;
@@ -34,10 +35,11 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     void Awake()
     {
         resourceManager = FindFirstObjectByType<ResourceManager>();
+
         _rTransform = GetComponent<RectTransform>();
         nodeImage = GetComponent<Image>();
-        nodeImage.color = Color.gray;
 
+        nodeImage.color = Color.gray;
         purchaseCountText.text = GetPurchaseText();
     }
 
@@ -238,6 +240,7 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         {
             _purchaseCount += 1;
             purchaseCountText.text = GetPurchaseText();
+            nodeEffect.OnPurchase();
 
             foreach (Node child in childNodes)
             {
@@ -258,7 +261,10 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 
     public void Unlock()
     {
-        _locked = false;
-        nodeImage.color = Color.white;
+        if (_locked)
+        {
+            _locked = false;
+            nodeImage.color = Color.white;
+        }
     }
 }

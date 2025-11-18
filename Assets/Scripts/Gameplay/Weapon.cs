@@ -7,10 +7,11 @@ public class Weapon : MonoBehaviour
     [SerializeField] GameObject projectilePrefab;
     [SerializeField] Transform projectileSpawnPoint;
     [SerializeField] float projectileSpeed = 50f;
-    [SerializeField] float shootCooldown = 0.25f;
+    [SerializeField] float baseShootCooldown = .5f;
 
     // Cached references
     private GameManager gameManager;
+    private StatsManager statsManager;
 
     // Internal fields
     private bool _isShooting;
@@ -19,6 +20,7 @@ public class Weapon : MonoBehaviour
     void Awake()
     {
         gameManager = FindFirstObjectByType<GameManager>();
+        statsManager = FindFirstObjectByType<StatsManager>();
     }
 
     void Update()
@@ -43,12 +45,13 @@ public class Weapon : MonoBehaviour
 
     private void Shoot()
     {
-        if (_shootCooldownAccumulator < shootCooldown)
+        float currentShootCooldown = baseShootCooldown * (1f / statsManager.AttackSpeedMultiplier);
+        if (_shootCooldownAccumulator < currentShootCooldown)
         {
             _shootCooldownAccumulator += Time.deltaTime;
         }
 
-        if (_isShooting && _shootCooldownAccumulator >= shootCooldown)
+        if (_isShooting && _shootCooldownAccumulator >= currentShootCooldown)
         {
             Projectile projectile = Instantiate(projectilePrefab, projectileSpawnPoint.position, projectileSpawnPoint.rotation).GetComponent<Projectile>();
             projectile.Speed = projectileSpeed;
