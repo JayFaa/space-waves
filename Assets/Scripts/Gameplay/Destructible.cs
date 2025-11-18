@@ -21,6 +21,7 @@ public class Destructible : MonoBehaviour
 
     private int _currentShield;
     private int _currentHealth;
+    private float _leftoverDamage = 0f;
     private float _shieldRegenAccumulator = 0f;
     private float _timeSinceLastDamage = 0f;
 
@@ -64,20 +65,29 @@ public class Destructible : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int damage, Vector3 direction)
+    public void TakeDamage(float damage, Vector3 direction)
     {
         if (invincibleOnHit && _timeSinceLastDamage < invincibilityWindow) return;
 
         if (damage > 0) _timeSinceLastDamage = 0f;
 
-        if (hasShield && _currentShield > 0)
+        int flooredDamage = Mathf.FloorToInt(damage);
+        _leftoverDamage += damage - flooredDamage;
+
+        if (_leftoverDamage >= 1f)
         {
-            int shieldDamage = Mathf.Min(_currentShield, damage);
-            _currentShield -= shieldDamage;
-            damage -= shieldDamage;
+            flooredDamage += 1;
+            _leftoverDamage -= 1f;
         }
 
-        _currentHealth -= damage;
+        if (hasShield && _currentShield > 0)
+        {
+            int shieldDamage = Mathf.Min(_currentShield, flooredDamage);
+            _currentShield -= shieldDamage;
+            flooredDamage -= shieldDamage;
+        }
+
+        _currentHealth -= flooredDamage;
         if (_currentHealth <= 0)
         {
             Die(direction);

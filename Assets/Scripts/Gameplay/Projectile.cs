@@ -2,17 +2,19 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    [SerializeField] private int damage = 25;
+    [SerializeField] private float damage = 25;
 
     public float Speed { get; set; }
 
     private Rigidbody _rb;
     private GameManager gameManager;
+    private StatsManager statsManager;
 
     void Awake()
     {
         _rb = GetComponent<Rigidbody>();
         gameManager = FindFirstObjectByType<GameManager>();
+        statsManager = FindFirstObjectByType<StatsManager>();
     }
 
     void FixedUpdate()
@@ -26,7 +28,9 @@ public class Projectile : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Enemy") && other.gameObject.TryGetComponent(out Destructible enemyHealth))
         {
-            enemyHealth.TakeDamage(damage, -other.contacts[0].normal);
+            float scaledDamage = statsManager.AttackDamageMultiplicativeModifier * (damage + statsManager.AttackDamageFlatModifier);
+            Debug.Log($"Projectile dealing {scaledDamage} damage to enemy.");
+            enemyHealth.TakeDamage(scaledDamage, -other.contacts[0].normal);
         }
 
         Destroy(gameObject);

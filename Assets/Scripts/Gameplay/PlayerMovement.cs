@@ -108,12 +108,12 @@ public class PlayerMovement : MonoBehaviour
 
             // Deal collision damage to enemy
             if (other.gameObject.TryGetComponent(out Destructible enemyHealth)) {
-                enemyHealth.TakeDamage(100, -other.contacts[0].normal); // Deal damage to the enemy on collision
+                enemyHealth.TakeDamage(100f, -other.contacts[0].normal); // Deal damage to the enemy on collision
             }
 
             // Deal collision damage to player
             if (TryGetComponent(out Destructible playerHealth)) {
-                playerHealth.TakeDamage(20, other.contacts[0].normal); // Player takes damage on collision
+                playerHealth.TakeDamage(20f, other.contacts[0].normal); // Player takes damage on collision
             } else {
                 Debug.LogWarning("Player does not have a Health component!");
             }
