@@ -987,6 +987,7 @@ MonoBehaviour:
   treeArcLR: {fileID: 1912651924671213231}
   lineDrawDepth: 0.1
   childNodes: []
+  tooltipPrefab: {fileID: 2923354323680951192, guid: 6bf87dcd8e427c047bf4d3595d2823b8, type: 3}
   iconImageGO: {fileID: 889019298843940877}
   innerBackgroundImageGO: {fileID: 4336471387108868392}
   outerBackgroundImageGO: {fileID: 1747210327819203563}
