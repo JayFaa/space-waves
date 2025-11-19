@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -18,9 +19,9 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     [SerializeField] List<Node> childNodes;
 
     [Header("UI Elements")]
+    [SerializeField] GameObject tooltipPrefab;
     [SerializeField] Image iconImageGO;
     [SerializeField] Image innerBackgroundImageGO;
-
     [SerializeField] Image outerBackgroundImageGO;
     [SerializeField] TMPro.TextMeshProUGUI priceTextGO;
     [SerializeField] TMPro.TextMeshProUGUI purchaseCountText;
@@ -35,8 +36,10 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     public float TierHeight { get; private set; }
 
     private ResourceManager resourceManager;
+    private Canvas treeCanvas;
 
     private RectTransform _rTransform;
+    private Tooltip _activeTooltip;
     private int _purchaseCount = 0;
     private bool _locked = true;
 
@@ -44,6 +47,8 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     {
         // Cache components
         resourceManager = FindFirstObjectByType<ResourceManager>();
+
+        treeCanvas = GetComponentInParent<Canvas>();
         _rTransform = GetComponent<RectTransform>();
 
         // Initialize UI elements
@@ -236,13 +241,22 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Debug.Log($"Pointer entered node! target: {eventData.pointerEnter.name} this: {this.name}");
-        if (this != eventData.pointerEnter.GetComponent<Node>()) Debug.Log("Pointer entered node does not match this node!");
+        // Only create tooltip if this is the node being hovered over, not a parent object
+        if (this != eventData.pointerEnter.GetComponentInParent<Node>()) return;
+
+        // Destroy any existing tooltip
+        DestroyTooltip();
+
+        // Create new tooltip
+        _activeTooltip = Instantiate(tooltipPrefab, treeCanvas.transform).GetComponent<Tooltip>();
+        _activeTooltip.SetText(nodeEffect.description);
+        _activeTooltip.SetPosition(treeCanvas.transform.InverseTransformPoint(_rTransform.position), _rTransform.sizeDelta.y);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        Debug.Log("Pointer exited node!");
+        // Don't allow tooltip to persist
+        DestroyTooltip();
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -262,6 +276,15 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
             {
                 outerBackgroundImageGO.color = Color.green;
             }
+        }
+    }
+
+    private void DestroyTooltip()
+    {
+        if (_activeTooltip != null)
+        {
+            Debug.Log("Destroying tooltip");
+            Destroy(_activeTooltip.gameObject);
         }
     }
 

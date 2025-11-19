@@ -477,6 +477,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   iconSprite: {fileID: 21300000, guid: 4f1af116cef1d124b9f3c81b8d5622a6, type: 3}
+  description: Doubles weapon fire rate.
   attackSpeedIncreaseAmount: 2
 --- !u!1 &410087039
 GameObject:
@@ -920,7 +921,6 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
-  - {fileID: 960234603}
   - {fileID: 1094159360}
   m_Father: {fileID: 458785748}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1018,6 +1018,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   iconSprite: {fileID: 21300000, guid: c71e9ba4d34c6e247b03e03473da2c14, type: 3}
+  description: Increases all weapon damage by 5.
   damageIncreaseAmount: 5
 --- !u!1 &785773267
 GameObject:
@@ -1518,81 +1519,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94285fbfc4efc0347be7113457579b0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &960234602
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 960234603}
-  - component: {fileID: 960234605}
-  - component: {fileID: 960234604}
-  m_Layer: 5
-  m_Name: Center
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &960234603
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 960234602}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 635243910}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 50, y: 50}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &960234604
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 960234602}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 0.01
---- !u!222 &960234605
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 960234602}
-  m_CullTransparentMesh: 1
 --- !u!224 &972155111 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5381353635088296410, guid: 123b03f338fa82b41ad7e48e507babf8, type: 3}
@@ -1611,6 +1537,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 972155111}
     m_Modifications:
+    - target: {fileID: 635139756733248671, guid: 383c7059316c1c1428a464af8f8ab148, type: 3}
+      propertyPath: m_fontSize
+      value: 2.95
+      objectReference: {fileID: 0}
     - target: {fileID: 1606896022296952737, guid: 383c7059316c1c1428a464af8f8ab148, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1703,6 +1633,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4327862765142072143, guid: 383c7059316c1c1428a464af8f8ab148, type: 3}
+      propertyPath: m_fontSize
+      value: 2.95
+      objectReference: {fileID: 0}
     - target: {fileID: 4704909161252394886, guid: 383c7059316c1c1428a464af8f8ab148, type: 3}
       propertyPath: m_Name
       value: Attack Speed Multiplicative
@@ -1717,15 +1651,15 @@ PrefabInstance:
       objectReference: {fileID: 345320559}
     - target: {fileID: 7448433101488803660, guid: 383c7059316c1c1428a464af8f8ab148, type: 3}
       propertyPath: nodeColor.b
-      value: 0
+      value: 0.40258992
       objectReference: {fileID: 0}
     - target: {fileID: 7448433101488803660, guid: 383c7059316c1c1428a464af8f8ab148, type: 3}
       propertyPath: nodeColor.g
-      value: 0
+      value: 0.40258992
       objectReference: {fileID: 0}
     - target: {fileID: 7448433101488803660, guid: 383c7059316c1c1428a464af8f8ab148, type: 3}
       propertyPath: nodeColor.r
-      value: 0.3207547
+      value: 0.7830189
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1924,6 +1858,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 635243910}
     m_Modifications:
+    - target: {fileID: 1184849069277569857, guid: 123b03f338fa82b41ad7e48e507babf8, type: 3}
+      propertyPath: m_fontSize
+      value: 2.95
+      objectReference: {fileID: 0}
+    - target: {fileID: 1561236419117061502, guid: 123b03f338fa82b41ad7e48e507babf8, type: 3}
+      propertyPath: m_fontSize
+      value: 2.95
+      objectReference: {fileID: 0}
+    - target: {fileID: 2410956592584260270, guid: 123b03f338fa82b41ad7e48e507babf8, type: 3}
+      propertyPath: m_fontSize
+      value: 2.95
+      objectReference: {fileID: 0}
+    - target: {fileID: 2643258442193767569, guid: 123b03f338fa82b41ad7e48e507babf8, type: 3}
+      propertyPath: m_fontSize
+      value: 2.95
+      objectReference: {fileID: 0}
     - target: {fileID: 3410557361459558066, guid: 123b03f338fa82b41ad7e48e507babf8, type: 3}
       propertyPath: m_Name
       value: Attack Branch
@@ -1938,15 +1888,15 @@ PrefabInstance:
       objectReference: {fileID: 727160595}
     - target: {fileID: 5413577179123644226, guid: 123b03f338fa82b41ad7e48e507babf8, type: 3}
       propertyPath: nodeColor.b
-      value: 0
+      value: 0.40258992
       objectReference: {fileID: 0}
     - target: {fileID: 5413577179123644226, guid: 123b03f338fa82b41ad7e48e507babf8, type: 3}
       propertyPath: nodeColor.g
-      value: 0
+      value: 0.40258992
       objectReference: {fileID: 0}
     - target: {fileID: 5413577179123644226, guid: 123b03f338fa82b41ad7e48e507babf8, type: 3}
       propertyPath: nodeColor.r
-      value: 0.3207547
+      value: 0.7830189
       objectReference: {fileID: 0}
     - target: {fileID: 5413577179123644226, guid: 123b03f338fa82b41ad7e48e507babf8, type: 3}
       propertyPath: maxPurchases
@@ -2058,15 +2008,15 @@ PrefabInstance:
       objectReference: {fileID: 2139694386}
     - target: {fileID: 8801438913218506413, guid: 123b03f338fa82b41ad7e48e507babf8, type: 3}
       propertyPath: nodeColor.b
-      value: 0
+      value: 0.40258992
       objectReference: {fileID: 0}
     - target: {fileID: 8801438913218506413, guid: 123b03f338fa82b41ad7e48e507babf8, type: 3}
       propertyPath: nodeColor.g
-      value: 0
+      value: 0.40258992
       objectReference: {fileID: 0}
     - target: {fileID: 8801438913218506413, guid: 123b03f338fa82b41ad7e48e507babf8, type: 3}
       propertyPath: nodeColor.r
-      value: 0.3207547
+      value: 0.7830189
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2831,6 +2781,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   iconSprite: {fileID: 21300000, guid: 4bd9ad2f09c33b840bc605c3a8fea4d3, type: 3}
+  description: 'Increases all weapon damage by 10%. '
   damageIncreaseMultiplier: 1.1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
