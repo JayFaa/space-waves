@@ -10,12 +10,21 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     [SerializeField] int price = 10;
     [SerializeField] int maxPurchases = 1;
     [SerializeField] BaseNodeEffect nodeEffect;
+    [SerializeField] Color nodeColor = Color.white;
     [SerializeField] LineRenderer treeConnectionForwardsLR;
     [SerializeField] LineRenderer treeConnectionBackwardsLR;
     [SerializeField] LineRenderer treeArcLR;
-    [SerializeField] TMPro.TextMeshProUGUI purchaseCountText;
     [SerializeField] float lineDrawDepth = .1f;
     [SerializeField] List<Node> childNodes;
+
+    [Header("UI Elements")]
+    [SerializeField] Image iconImageGO;
+    [SerializeField] Image innerBackgroundImageGO;
+
+    [SerializeField] Image outerBackgroundImageGO;
+    [SerializeField] TMPro.TextMeshProUGUI priceTextGO;
+    [SerializeField] TMPro.TextMeshProUGUI purchaseCountText;
+
 
     public int Width { get; private set; }
     public int Depth { get; private set; }
@@ -28,19 +37,21 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     private ResourceManager resourceManager;
 
     private RectTransform _rTransform;
-    private Image nodeImage;
     private int _purchaseCount = 0;
     private bool _locked = true;
 
     void Awake()
     {
+        // Cache components
         resourceManager = FindFirstObjectByType<ResourceManager>();
-
         _rTransform = GetComponent<RectTransform>();
-        nodeImage = GetComponent<Image>();
 
-        nodeImage.color = Color.gray;
-        purchaseCountText.text = GetPurchaseText();
+        // Initialize UI elements
+        innerBackgroundImageGO.color = nodeColor;
+        outerBackgroundImageGO.color = Color.grey;
+        iconImageGO.sprite = nodeEffect.iconSprite;
+        priceTextGO.text = price.ToString();
+        purchaseCountText.text = BuildPurchaseText();
     }
 
     // Positions this node and its children according to the given domain
@@ -167,7 +178,7 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 
     public void Scale(float size)
     {
-        _rTransform.sizeDelta = new(size, size);
+        _rTransform.sizeDelta = new(size, size * (3f/2f)); // Slightly taller to accomodate additional UI elements
 
         if (childNodes.Count > 0)
         {
@@ -239,7 +250,7 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         if (!_locked && _purchaseCount < maxPurchases && resourceManager.SpendGold(price))
         {
             _purchaseCount += 1;
-            purchaseCountText.text = GetPurchaseText();
+            purchaseCountText.text = BuildPurchaseText();
             nodeEffect.OnPurchase();
 
             foreach (Node child in childNodes)
@@ -249,12 +260,12 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 
             if (_purchaseCount >= maxPurchases)
             {
-                nodeImage.color = Color.green;
+                outerBackgroundImageGO.color = Color.green;
             }
         }
     }
 
-    private string GetPurchaseText()
+    private string BuildPurchaseText()
     {
         return $"{_purchaseCount}/{maxPurchases}";
     }
@@ -264,7 +275,7 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         if (_locked)
         {
             _locked = false;
-            nodeImage.color = Color.white;
+            outerBackgroundImageGO.color = Color.white;
         }
     }
 }

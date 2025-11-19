@@ -4,6 +4,8 @@ public abstract class BaseNodeEffect : MonoBehaviour
 {
     abstract public void OnPurchase();
 
+    [SerializeField] public Sprite iconSprite;
+
     protected StatsManager statsManager;
 
     void Awake()
