@@ -9,19 +9,26 @@ public class SnakeEnemySegment : MonoBehaviour
     [SerializeField] float deathDelay = 0.1f;
 
     private Rigidbody _rb;
+    private GameManager gameManager;
 
     private bool _isSeparated = false;
     private Queue<Vector3> _positionQueue = new Queue<Vector3>();
     private Vector3 _initialPosition;
+    private bool _destroying = false;
 
     void Awake()
     {
+        gameManager = FindFirstObjectByType<GameManager>();
+
         _rb = GetComponent<Rigidbody>();
+
         _initialPosition = transform.position;
     }
 
     void FixedUpdate()
     {
+        if (!gameManager.GameIsActive) return;
+        
         // Pass on current position to linked segment if present
         if (linkedSegment != null)
         {
@@ -85,25 +92,27 @@ public class SnakeEnemySegment : MonoBehaviour
         // Nothing to do if already separated
         if (!_isSeparated)
         {
-            head.ReduceSegmentCount(SegmentCount());
+            int count = SegmentCount();
             SetSeparated();
+            head.ReduceSegmentCount(count);
         }
     }
 
     public void SetSeparated()
     {
-        _isSeparated = true;
-        if (linkedSegment != null) linkedSegment.SetSeparated();
-    }
+        if (!_destroying)
+        {
+            _isSeparated = true;
+            gameObject.transform.parent = null;
+        }
 
-    public void UnsetParent()
-    {
-        gameObject.transform.parent = null;
-        if (linkedSegment != null) linkedSegment.UnsetParent();
+        if (linkedSegment != null) linkedSegment.SetSeparated();
     }
 
     void OnDestroy()
     {
+        _destroying = true;
+
         // If not already separated, separate from head first
         if (!_isSeparated)
         {

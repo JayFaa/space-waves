@@ -13,6 +13,7 @@ public class LootChunk : MonoBehaviour
     {
         gameManager = FindFirstObjectByType<GameManager>();
         resourceManager = FindFirstObjectByType<ResourceManager>();
+
         _rb = GetComponent<Rigidbody>();
     }
 
