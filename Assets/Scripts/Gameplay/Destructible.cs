@@ -24,6 +24,8 @@ public class Destructible : MonoBehaviour
     private float _leftoverDamage = 0f;
     private float _shieldRegenAccumulator = 0f;
     private float _timeSinceLastDamage = 0f;
+    private Vector3 _mostRecentDamageDirection = Vector3.back;
+    private bool _quitting = false;
 
     void Awake()
     {
@@ -69,7 +71,12 @@ public class Destructible : MonoBehaviour
     {
         if (invincibleOnHit && _timeSinceLastDamage < invincibilityWindow) return;
 
-        if (damage > 0) _timeSinceLastDamage = 0f;
+        Debug.Log($"{gameObject.name} took {damage} damage.");
+
+        if (damage > 0){
+            _timeSinceLastDamage = 0f;
+            _mostRecentDamageDirection = direction;
+        }
 
         int flooredDamage = Mathf.FloorToInt(damage);
         _leftoverDamage += damage - flooredDamage;
@@ -90,23 +97,30 @@ public class Destructible : MonoBehaviour
         _currentHealth -= flooredDamage;
         if (_currentHealth <= 0)
         {
-            Die(direction);
+            Die();
         }
     }
 
-    private void Die(Vector3 direction)
+    public void Die()
     {
         // Reload scene if player dies
         if (gameObject.CompareTag("Player")) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
+        Destroy(gameObject);
+    }
+
+    void OnDestroy()
+    {
         // Spawn loot if an enemy dies
-        if (lootSpawnerPrefab != null)
+        if (!_quitting && lootSpawnerPrefab != null)
         {
-            GameObject lootSpawner = Instantiate(lootSpawnerPrefab, transform.position, Quaternion.LookRotation(direction, Vector3.up));
+            GameObject lootSpawner = Instantiate(lootSpawnerPrefab, transform.position, Quaternion.LookRotation(_mostRecentDamageDirection, Vector3.up));
             lootSpawner.GetComponent<LootSpawner>().SpawnLoot(lootPerKill);
             Destroy(lootSpawner, 1f);
         }
-
-        Destroy(gameObject);
+    }
+    void OnApplicationQuit()
+    {
+        _quitting = true;
     }
 }

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2636083624331870367}
   - component: {fileID: 7476519537712125810}
   m_Layer: 0
-  m_Name: Loot Spawner
+  m_Name: Snake Loot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -680,7 +680,7 @@ ParticleSystem:
   ShapeModule:
     serializedVersion: 6
     enabled: 1
-    type: 4
+    type: 0
     angle: 45
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
@@ -4902,5 +4902,5 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.3
+  m_Radius: 0.2
   m_Center: {x: 0, y: 0, z: 0}

@@ -9,13 +9,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7711446953020992088}
-  - component: {fileID: 464907353667425669}
   - component: {fileID: 6707631052566051253}
+  - component: {fileID: 464907353667425669}
   - component: {fileID: 798185841048452062}
   - component: {fileID: 4988434057903988976}
   - component: {fileID: 5154462795613694270}
   - component: {fileID: 6453772381483502033}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Follow Enemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -37,6 +37,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6707631052566051253
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1396520428261047148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 343a1dd7bd9c5d2409dd9f0b2f31a584, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetSpeed: 3
 --- !u!114 &464907353667425669
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -58,19 +71,6 @@ MonoBehaviour:
   shieldRegenRate: 0
   lootSpawnerPrefab: {fileID: 3708074448457716266, guid: a414675ea5ecdd3419052dac843ed26c, type: 3}
   lootPerKill: 5
---- !u!114 &6707631052566051253
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1396520428261047148}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 343a1dd7bd9c5d2409dd9f0b2f31a584, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetSpeed: 3
 --- !u!54 &798185841048452062
 Rigidbody:
   m_ObjectHideFlags: 0
