@@ -18,6 +18,7 @@ public class Destructible : MonoBehaviour
 
     // Cached references
     private GameManager gameManager;
+    private UIManager uiManager;
 
     private int _currentShield;
     private int _currentHealth;
@@ -30,23 +31,20 @@ public class Destructible : MonoBehaviour
     void Awake()
     {
         gameManager = FindFirstObjectByType<GameManager>();
+        uiManager = FindFirstObjectByType<UIManager>();
     }
 
     void Start()
     {
         _currentShield = maxShield;
         _currentHealth = maxHealth;
+        UpdateUI();
     }
 
     void Update()
     {
-
         if (!gameManager.GameIsActive) return;
-
         if (hasShield) RechargeShield();
-
-        // Expose health and shield for debugging until UI is implemented
-        /// if (gameObject.CompareTag("Player")) Debug.Log($"Health: {_currentHealth} | Shield: {_currentShield}");
     }
 
     void RechargeShield()
@@ -63,6 +61,7 @@ public class Destructible : MonoBehaviour
             {
                 _currentShield = Mathf.Min(_currentShield + shieldToRegen, maxShield);
                 _shieldRegenAccumulator -= shieldToRegen;
+                UpdateShieldUI();
             }
         }
     }
@@ -95,6 +94,8 @@ public class Destructible : MonoBehaviour
         }
 
         _currentHealth -= flooredDamage;
+        UpdateUI();
+
         if (_currentHealth <= 0)
         {
             Die();
@@ -109,16 +110,39 @@ public class Destructible : MonoBehaviour
         Destroy(gameObject);
     }
 
+    private void UpdateUI()
+    {
+        UpdateShieldUI();
+        UpdateHealthUI();
+    }
+
+    private void UpdateShieldUI()
+    {
+        if (gameObject.CompareTag("Player"))
+        {
+            uiManager.UpdateShield(_currentShield, maxShield);
+        }
+    }
+
+    private void UpdateHealthUI()
+    {
+        if (gameObject.CompareTag("Player"))
+        {
+            uiManager.UpdateHealth(_currentHealth, maxHealth);
+        }
+    }
+
     void OnDestroy()
     {
         // Spawn loot if an enemy dies
-        if (!_quitting && lootSpawnerPrefab != null)
+        if (!_quitting && gameObject.scene.isLoaded && lootSpawnerPrefab != null)
         {
             GameObject lootSpawner = Instantiate(lootSpawnerPrefab, transform.position, Quaternion.LookRotation(_mostRecentDamageDirection, Vector3.up));
             lootSpawner.GetComponent<LootSpawner>().SpawnLoot(lootPerKill);
             Destroy(lootSpawner, 1f);
         }
     }
+
     void OnApplicationQuit()
     {
         _quitting = true;

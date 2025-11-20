@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class SnakeEnemyHead : MonoBehaviour
@@ -15,11 +14,15 @@ public class SnakeEnemyHead : MonoBehaviour
     [SerializeField] float endSize = 0.2f;
 
     private Rigidbody _rb;
+    private GameManager gameManager;
+
     private int _currentSegmentCount;
     private float _nextDirectionChangeTime;
     private float _directionChangeAccumulator = 0f;
 
     void Awake() {
+        gameManager = FindFirstObjectByType<GameManager>();
+
         _rb = GetComponent<Rigidbody>();
         
         // Initialize direction change timing manually on Awake to avoid always turning the same direction first
@@ -39,6 +42,11 @@ public class SnakeEnemyHead : MonoBehaviour
     }
 
     private void FixedUpdate() {
+        if (!gameManager.GameIsActive){
+            _rb.linearVelocity = Vector3.zero;
+            return;
+        }
+        
         // First, pass on current position to linked segment if present
         if (linkedSegment != null) linkedSegment.EnqueuePosition(transform.position);
 
@@ -79,10 +87,9 @@ public class SnakeEnemyHead : MonoBehaviour
 
     private void DestroySegments()
     {
-        if (linkedSegment != null) 
+        if (linkedSegment != null && linkedSegment.gameObject.activeSelf) 
         {
             linkedSegment.SetSeparated();
-            linkedSegment.UnsetParent();
             Destroy(linkedSegment.gameObject);
         }
     }
