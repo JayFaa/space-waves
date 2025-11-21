@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,6 +9,8 @@ public class Weapon : MonoBehaviour
     [SerializeField] Transform projectileSpawnPoint;
     [SerializeField] float projectileSpeed = 50f;
     [SerializeField] float baseShootCooldown = .5f;
+    [SerializeField] float burstFireProportion = .5f;
+    [SerializeField] float spreadAngleDegrees = 45f;
 
     // Cached references
     private GameManager gameManager;
@@ -53,9 +56,32 @@ public class Weapon : MonoBehaviour
 
         if (_isShooting && _shootCooldownAccumulator >= currentShootCooldown)
         {
-            Projectile projectile = Instantiate(projectilePrefab, projectileSpawnPoint.position, projectileSpawnPoint.rotation).GetComponent<Projectile>();
-            projectile.Speed = projectileSpeed;
+            float burstCooldown = currentShootCooldown * burstFireProportion / statsManager.BurstFireShotCount;
+            StartCoroutine(BurstFireCoroutine(statsManager.BurstFireShotCount, burstCooldown));
+
             _shootCooldownAccumulator = 0f;
+        }
+    }
+
+    private IEnumerator BurstFireCoroutine(int count, float delayBetweenShots)
+    {
+        int shotsFired = 0;
+        while (shotsFired < count)
+        {
+            shotsFired++;
+
+            float minAngle = -spreadAngleDegrees;
+            float angleStep = spreadAngleDegrees * 2f / (statsManager.SpreadFireShotCount + 1);
+
+            Projectile projectile;
+            for (float angle = minAngle + angleStep; angle < spreadAngleDegrees; angle += angleStep)
+            {
+                Quaternion rotation = projectileSpawnPoint.rotation * Quaternion.AngleAxis(angle, Vector3.up);
+                projectile = Instantiate(projectilePrefab, projectileSpawnPoint.position, rotation).GetComponent<Projectile>();
+                projectile.Speed = projectileSpeed;
+            }
+
+            yield return new WaitForSeconds(delayBetweenShots);
         }
     }
 
