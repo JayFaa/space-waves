@@ -43,6 +43,8 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     private bool _locked = true;
     private bool _isChoiceNode = false;
 
+    private readonly float lineDrawDepth = 0.01f;
+
     void Awake()
     {
         // Cache components
@@ -148,8 +150,8 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         Vector2 lineEnd = treeCenterPosition + PolarToCartesian(DomainCenter, r);
 
         lr.positionCount = 2;
-        lr.SetPosition(0, new(0f, 0f, 0f));
-        lr.SetPosition(1, new(lineEnd.x, lineEnd.y, 0f));
+        lr.SetPosition(0, new(0f, 0f, lineDrawDepth));
+        lr.SetPosition(1, new(lineEnd.x, lineEnd.y, lineDrawDepth));
     }
 
     private void DrawTreeArc(int segments, Vector2 treeCenterPosition)
@@ -185,7 +187,7 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
             Vector3[] finalPositions =
                 arcPositions
                     .Select(position => treeCenterPosition + position)
-                    .Select(position => new Vector3(position.x, position.y, 0f))
+                    .Select(position => new Vector3(position.x, position.y, lineDrawDepth))
                     .ToArray();
 
             treeArcLR.positionCount = arcPositions.Length;
