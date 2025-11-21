@@ -20,6 +20,12 @@ public class EnemySpawner : MonoBehaviour
     {
         if (!gameManager.GameIsActive) return;
 
+        if (gameManager.GameIsResetting)
+        {
+            _spawnTimeAccumulator = 0f;
+            return;
+        }
+
         if (_spawnTimeAccumulator < spawnInterval)
         {
             _spawnTimeAccumulator += Time.deltaTime;

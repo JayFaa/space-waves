@@ -4893,11 +4893,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b05bd892e3ce2045836a702c7fbcdc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHealth: 10
   invincibleOnHit: 0
   invincibilityWindow: 0.05
   hasShield: 1
-  maxShield: 50
+  maxShield: 10
   shieldRegenDelay: 3
   shieldRegenRate: 5
   lootSpawnerPrefab: {fileID: 0}

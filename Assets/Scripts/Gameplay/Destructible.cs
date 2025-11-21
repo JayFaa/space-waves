@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class Destructible : MonoBehaviour
 {
@@ -105,9 +104,16 @@ public class Destructible : MonoBehaviour
     public void Die()
     {
         // Reload scene if player dies
-        if (gameObject.CompareTag("Player")) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-
-        Destroy(gameObject);
+        if (gameObject.CompareTag("Player")){
+            gameManager.ResetGame();
+            _currentHealth = maxHealth;
+            _currentShield = maxShield;
+            UpdateUI();
+        }
+        else
+        {
+            Destroy(gameObject);  
+        }
     }
 
     private void UpdateUI()
@@ -135,7 +141,7 @@ public class Destructible : MonoBehaviour
     void OnDestroy()
     {
         // Spawn loot if an enemy dies
-        if (!_quitting && gameObject.scene.isLoaded && lootSpawnerPrefab != null)
+        if (!_quitting && !gameManager.GameIsResetting && lootSpawnerPrefab != null)
         {
             GameObject lootSpawner = Instantiate(lootSpawnerPrefab, transform.position, Quaternion.LookRotation(_mostRecentDamageDirection, Vector3.up));
             lootSpawner.GetComponent<LootSpawner>().SpawnLoot(lootPerKill);

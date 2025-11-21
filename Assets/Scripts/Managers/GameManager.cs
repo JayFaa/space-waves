@@ -4,8 +4,10 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public bool GameIsActive { get; private set; } = false;
+    public bool GameIsResetting { get; private set; } = false;
 
     private Canvas _treeCanvas;
+    private Transform _playerTransform;
 
     void Awake()
     {
@@ -18,6 +20,7 @@ public class GameManager : MonoBehaviour
         GameIsActive = true;
 
         _treeCanvas = FindFirstObjectByType<Canvas>(FindObjectsInactive.Include);
+        _playerTransform = FindFirstObjectByType<PlayerMovement>().transform;
     }
 
     public void PauseGame()
@@ -37,5 +40,33 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSecondsRealtime(delay);
         GameIsActive = true;
         _treeCanvas.gameObject.SetActive(false);
+    }
+
+    public void ResetGame()
+    {
+        GameIsResetting = true;
+        StartCoroutine(ResetGameCoroutine());
+    }
+
+    private IEnumerator ResetGameCoroutine()
+    {
+        // Clean up all interactable game objects except the player
+        foreach (var enemy in FindObjectsByType<FollowEnemy>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+        {
+            Destroy(enemy.gameObject);
+        }
+        foreach (var enemy in FindObjectsByType<SnakeEnemyHead>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+        {
+            Destroy(enemy.gameObject);
+        }
+        foreach (var loot in FindObjectsByType<LootChunk>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+        {
+            Destroy(loot.gameObject);
+        }
+
+        yield return new WaitForSeconds(1f);
+
+        _playerTransform.position = Vector3.zero;
+        GameIsResetting = false;
     }
 }

@@ -7,6 +7,16 @@ public class ShipUIManager : MonoBehaviour
     [SerializeField] Slider shieldBar;
     [SerializeField] TMPro.TextMeshProUGUI resourceText;
 
+    void Awake()
+    {
+        if (FindAnyObjectByType<ShipUIManager>() != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        DontDestroyOnLoad(gameObject);
+    } 
+
     public void UpdateHealth(float currentHealth, float maxHealth)
     {
         healthBar.value = currentHealth / maxHealth;
