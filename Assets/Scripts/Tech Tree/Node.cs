@@ -8,15 +8,16 @@ using UnityEngine.UI;
 [RequireComponent(typeof(RectTransform))]
 public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
-    [SerializeField] int price = 10;
-    [SerializeField] int maxPurchases = 1;
-    [SerializeField] BaseNodeEffect nodeEffect;
-    [SerializeField] Color nodeColor = Color.white;
+    [SerializeField] PurchaseableNode nodeEffect;
     [SerializeField] LineRenderer treeConnectionForwardsLR;
     [SerializeField] LineRenderer treeConnectionBackwardsLR;
     [SerializeField] LineRenderer treeArcLR;
-    [SerializeField] float lineDrawDepth = .1f;
     [SerializeField] List<Node> childNodes;
+
+    [Header("Node State Colors")]
+    [SerializeField] Color lockedColor = Color.grey;
+    [SerializeField] Color unlockedColor = Color.white;
+    [SerializeField] Color fullyPurchasedColor = Color.green;
 
     [Header("UI Elements")]
     [SerializeField] GameObject tooltipPrefab;
@@ -26,7 +27,6 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     [SerializeField] TMPro.TextMeshProUGUI priceTextGO;
     [SerializeField] TMPro.TextMeshProUGUI purchaseCountText;
 
-
     public int Width { get; private set; }
     public int Depth { get; private set; }
     public float DomainStart { get; private set; }
@@ -35,28 +35,47 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     public float Radius { get; private set; }
     public float TierHeight { get; private set; }
 
-    private ResourceManager resourceManager;
     private Canvas treeCanvas;
+    private ChoiceWindow choiceWindow;
 
     private RectTransform _rTransform;
     private Tooltip _activeTooltip;
-    private int _purchaseCount = 0;
     private bool _locked = true;
+    private bool _isChoiceNode = false;
 
     void Awake()
     {
         // Cache components
-        resourceManager = FindFirstObjectByType<ResourceManager>();
+        choiceWindow = FindFirstObjectByType<ChoiceWindow>(FindObjectsInactive.Include);
 
-        treeCanvas = GetComponentInParent<Canvas>();
+        treeCanvas = GetComponentInParent<Canvas>(true);
         _rTransform = GetComponent<RectTransform>();
 
         // Initialize UI elements
-        innerBackgroundImageGO.color = nodeColor;
-        outerBackgroundImageGO.color = Color.grey;
-        iconImageGO.sprite = nodeEffect.iconSprite;
-        priceTextGO.text = price.ToString();
-        purchaseCountText.text = BuildPurchaseText();
+        outerBackgroundImageGO.color = lockedColor;
+        SetNodeEffectUI();
+    }
+
+    public void SetIsChoiceNode(bool isChoice)
+    {
+        Debug.Log($"Setting is choice node on {gameObject.name} to {isChoice}");
+        _isChoiceNode = isChoice;
+    }
+
+    public void SetNodeEffect(PurchaseableNode effect)
+    {
+        nodeEffect = effect;
+        SetNodeEffectUI();
+        outerBackgroundImageGO.color = unlockedColor;
+    }
+
+    private void SetNodeEffectUI()
+    {
+        // Update UI elements
+        innerBackgroundImageGO.color = nodeEffect.config.nodeColor;
+        iconImageGO.sprite = nodeEffect.config.iconSprite;
+        priceTextGO.text = nodeEffect.BuildPriceText();
+        purchaseCountText.text = nodeEffect.BuildPurchaseCountText();
     }
 
     // Positions this node and its children according to the given domain
@@ -129,8 +148,8 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         Vector2 lineEnd = treeCenterPosition + PolarToCartesian(DomainCenter, r);
 
         lr.positionCount = 2;
-        lr.SetPosition(0, new(0, 0, lineDrawDepth));
-        lr.SetPosition(1, new(lineEnd.x, lineEnd.y, lineDrawDepth));
+        lr.SetPosition(0, new(0f, 0f, 0f));
+        lr.SetPosition(1, new(lineEnd.x, lineEnd.y, 0f));
     }
 
     private void DrawTreeArc(int segments, Vector2 treeCenterPosition)
@@ -166,7 +185,7 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
             Vector3[] finalPositions =
                 arcPositions
                     .Select(position => treeCenterPosition + position)
-                    .Select(position => new Vector3(position.x, position.y, lineDrawDepth))
+                    .Select(position => new Vector3(position.x, position.y, 0f))
                     .ToArray();
 
             treeArcLR.positionCount = arcPositions.Length;
@@ -241,40 +260,60 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        // Only create tooltip if this is the node being hovered over, not a parent object
-        if (this != eventData.pointerEnter.GetComponentInParent<Node>()) return;
+        Debug.Log($"Is choice node: {_isChoiceNode}");
+        if (_isChoiceNode)
+        {
+            choiceWindow.SetDescription(nodeEffect.config.description);
+        }
+        else if (choiceWindow.gameObject.activeSelf == false)
+        {
+            // Only create tooltip if this is the node being hovered over, not a parent object
+            if (this != eventData.pointerEnter.GetComponentInParent<Node>()) return;
 
-        // Destroy any existing tooltip
-        DestroyTooltip();
+            // Destroy any existing tooltip
+            DestroyTooltip();
 
-        // Create new tooltip
-        _activeTooltip = Instantiate(tooltipPrefab, treeCanvas.transform).GetComponent<Tooltip>();
-        _activeTooltip.SetText(nodeEffect.description);
-        _activeTooltip.SetPosition(treeCanvas.transform.InverseTransformPoint(_rTransform.position), _rTransform.sizeDelta.y);
+            // Create new tooltip
+            _activeTooltip = Instantiate(tooltipPrefab, treeCanvas.transform).GetComponent<Tooltip>();
+            _activeTooltip.SetText(nodeEffect.config.description);
+            _activeTooltip.SetPosition(treeCanvas.transform.InverseTransformPoint(_rTransform.position), _rTransform.sizeDelta.y);
+        }
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        // Don't allow tooltip to persist
-        DestroyTooltip();
+        if (_isChoiceNode)
+        {
+            choiceWindow.SetDescription("");
+        }
+        else
+        {
+            DestroyTooltip();
+        }
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (!_locked && _purchaseCount < maxPurchases && resourceManager.SpendGold(price))
+        if (_isChoiceNode)
         {
-            _purchaseCount += 1;
-            purchaseCountText.text = BuildPurchaseText();
-            nodeEffect.OnPurchase();
+            choiceWindow.MakeChoice(nodeEffect);
+        }
+        else if (!_locked && choiceWindow.gameObject.activeSelf == false && nodeEffect.CanBePurchased())
+        {
+            nodeEffect.Purchase();
+            purchaseCountText.text = nodeEffect.BuildPurchaseCountText();
 
-            foreach (Node child in childNodes)
+            if (nodeEffect.PurchaseCount >= nodeEffect.config.maxPurchases)
             {
-                child.Unlock();
+                outerBackgroundImageGO.color = fullyPurchasedColor;
             }
 
-            if (_purchaseCount >= maxPurchases)
+            if (nodeEffect.config.unlocksChildNodes)
             {
-                outerBackgroundImageGO.color = Color.green;
+                foreach (Node child in childNodes)
+                {
+                    child.Unlock();
+                }
             }
         }
     }
@@ -288,17 +327,12 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         }
     }
 
-    private string BuildPurchaseText()
-    {
-        return $"{_purchaseCount}/{maxPurchases}";
-    }
-
     public void Unlock()
     {
         if (_locked)
         {
             _locked = false;
-            outerBackgroundImageGO.color = Color.white;
+            outerBackgroundImageGO.color = unlockedColor;
         }
     }
 }
