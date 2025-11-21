@@ -4,7 +4,7 @@ public class ResourceManager : MonoBehaviour
 {
     public int GoldCount { get; private set; } = 0;
 
-    private UIManager uiManager;
+    private ShipUIManager uiManager;
 
     void Awake()
     {
@@ -15,7 +15,7 @@ public class ResourceManager : MonoBehaviour
         }
         DontDestroyOnLoad(gameObject);
 
-        uiManager = FindFirstObjectByType<UIManager>();
+        uiManager = FindFirstObjectByType<ShipUIManager>();
     }
 
     void Start()
@@ -29,14 +29,17 @@ public class ResourceManager : MonoBehaviour
         uiManager.UpdateResourceCount(GoldCount);
     }
 
-    public bool SpendGold(int amount)
+    public bool HasGold(int amount)
+    {
+        return GoldCount >= amount;
+    }
+
+    public void SpendGold(int amount)
     {
         if (GoldCount >= amount)
         {
             GoldCount -= amount;
             uiManager.UpdateResourceCount(GoldCount);
-            return true;
         }
-        return false;
     }
 }

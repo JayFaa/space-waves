@@ -18,7 +18,7 @@ public class Destructible : MonoBehaviour
 
     // Cached references
     private GameManager gameManager;
-    private UIManager uiManager;
+    private ShipUIManager uiManager;
 
     private int _currentShield;
     private int _currentHealth;
@@ -31,7 +31,7 @@ public class Destructible : MonoBehaviour
     void Awake()
     {
         gameManager = FindFirstObjectByType<GameManager>();
-        uiManager = FindFirstObjectByType<UIManager>();
+        uiManager = FindFirstObjectByType<ShipUIManager>();
     }
 
     void Start()

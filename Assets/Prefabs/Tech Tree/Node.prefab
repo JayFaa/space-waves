@@ -174,7 +174,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: bede920f7f5eba74986513d4587a1591, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -200,7 +200,7 @@ LineRenderer:
   - {x: 0, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 1
+    widthMultiplier: 5
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -626,7 +626,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: bede920f7f5eba74986513d4587a1591, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -652,7 +652,7 @@ LineRenderer:
   - {x: 0, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 1
+    widthMultiplier: 5
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -769,7 +769,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: bede920f7f5eba74986513d4587a1591, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -795,7 +795,7 @@ LineRenderer:
   - {x: 0, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 1
+    widthMultiplier: 5
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -978,15 +978,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15b8962f3c42fb4429595405c61ffd08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  price: 10
-  maxPurchases: 1
   nodeEffect: {fileID: 0}
-  nodeColor: {r: 1, g: 1, b: 1, a: 1}
   treeConnectionForwardsLR: {fileID: 7841753074588450065}
   treeConnectionBackwardsLR: {fileID: 7411631052964500285}
   treeArcLR: {fileID: 1912651924671213231}
-  lineDrawDepth: 0.1
   childNodes: []
+  lockedColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  unlockedColor: {r: 1, g: 1, b: 1, a: 1}
+  fullyPurchasedColor: {r: 0, g: 1, b: 0, a: 1}
   tooltipPrefab: {fileID: 2923354323680951192, guid: 6bf87dcd8e427c047bf4d3595d2823b8, type: 3}
   iconImageGO: {fileID: 889019298843940877}
   innerBackgroundImageGO: {fileID: 4336471387108868392}

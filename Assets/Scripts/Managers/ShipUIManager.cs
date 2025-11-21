@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIManager : MonoBehaviour
+public class ShipUIManager : MonoBehaviour
 {
     [SerializeField] Slider healthBar;
     [SerializeField] Slider shieldBar;

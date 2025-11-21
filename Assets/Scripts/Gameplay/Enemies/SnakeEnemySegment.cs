@@ -40,17 +40,26 @@ public class SnakeEnemySegment : MonoBehaviour
         {
             // Calculate new position and rotation from queue
             Vector3 targetPosition = _positionQueue.Dequeue();
-            Quaternion targetRotation = Quaternion.LookRotation(targetPosition - transform.position, Vector3.up);
             _rb.MovePosition(targetPosition);
-            _rb.MoveRotation(targetRotation);
+
+            Vector3 lookDirection = targetPosition - transform.position;
+            if (!(lookDirection == Vector3.zero)){
+                Quaternion targetRotation = Quaternion.LookRotation(lookDirection, Vector3.up);
+                _rb.MoveRotation(targetRotation);
+            }
+
             _rb.linearVelocity = Vector3.zero;
         }
         else if (_positionQueue.Count > 0)
         {
             Vector3 inferredPosition = Vector3.Lerp(_initialPosition, _positionQueue.Peek(), _positionQueue.Count * Time.fixedDeltaTime / followDelay);
-            Quaternion inferredRotation = Quaternion.LookRotation(_positionQueue.Peek() - inferredPosition, Vector3.up);
             _rb.MovePosition(inferredPosition);
-            _rb.MoveRotation(inferredRotation);
+
+            Vector3 inferredLookDirection = _positionQueue.Peek() - inferredPosition;
+            if (!(inferredLookDirection == Vector3.zero)){
+                Quaternion inferredRotation = Quaternion.LookRotation(inferredLookDirection, Vector3.up);
+                _rb.MoveRotation(inferredRotation);
+            }
         }
     }
 
