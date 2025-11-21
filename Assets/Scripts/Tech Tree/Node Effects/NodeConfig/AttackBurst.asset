@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0631581c59cefff469167a395a1b8222, type: 3}
-  m_Name: AttackSpread
+  m_Name: AttackBurst
   m_EditorClassIdentifier: 
   price: 50
   maxPurchases: 1
-  iconSprite: {fileID: 21300000, guid: 51f93e107cbcd97458c47d96cc06a7bd, type: 3}
+  iconSprite: {fileID: 21300000, guid: 41fc03711fdddd44ca9830400d63b5d4, type: 3}
   nodeColor: {r: 1, g: 0.6556604, b: 0.6556604, a: 1}
-  magnitude: 2
-  description: Fire two additional shots at a time in a cone.
+  magnitude: 1
+  description: Fire an additional shot immediately after the first.
   unlocksChildNodes: 1
