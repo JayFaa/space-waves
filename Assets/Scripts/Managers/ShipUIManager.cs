@@ -31,6 +31,18 @@ public class ShipUIManager : MonoBehaviour
         shieldText.text = $"{currentShield} / {maxShield}";
     }
 
+    public void HideText()
+    {
+        healthText.gameObject.SetActive(false);
+        shieldText.gameObject.SetActive(false);
+    }
+
+    public void ShowText()
+    {
+        healthText.gameObject.SetActive(true);
+        shieldText.gameObject.SetActive(true);
+    }
+
     public void UpdateResourceCount(int count)
     {
         resourceText.text = count.ToString();
