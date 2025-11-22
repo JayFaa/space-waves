@@ -41,6 +41,6 @@ public abstract class PurchaseableNode : MonoBehaviour
 
     public string BuildPriceText()
     {
-        return config.price.ToString();
+        return config.price == 0 ? "Free" : config.price.ToString();
     }
 }

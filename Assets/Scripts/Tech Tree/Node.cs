@@ -12,10 +12,12 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     [SerializeField] LineRenderer treeConnectionForwardsLR;
     [SerializeField] LineRenderer treeConnectionBackwardsLR;
     [SerializeField] LineRenderer treeArcLR;
+    [SerializeField] Material lockedLineMaterial;
+    [SerializeField] Material unlockedLineMaterial;
     [SerializeField] List<Node> childNodes;
 
     [Header("Node State Colors")]
-    [SerializeField] Color lockedColor = Color.grey;
+    [SerializeField] Color lockedColor = Color.black;
     [SerializeField] Color unlockedColor = Color.white;
     [SerializeField] Color fullyPurchasedColor = Color.green;
 
@@ -40,6 +42,8 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 
     private RectTransform _rTransform;
     private Tooltip _activeTooltip;
+    private int _mostRecentArcSegments = 0;
+    private Vector2 _mostRecentTreeCenterPosition = Vector2.zero;
     private bool _locked = true;
     private bool _isChoiceNode = false;
 
@@ -113,6 +117,8 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 
     public void DrawLines(int arcSegments, Vector2 treeCenterPosition)
     {
+        _mostRecentArcSegments = arcSegments;
+        _mostRecentTreeCenterPosition = treeCenterPosition;
 
         // Update relative tree center position based on the current node's position
         treeCenterPosition -= _rTransform.anchoredPosition;
@@ -136,19 +142,22 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 
     private void DrawBackwardsTreeConnection(Vector2 treeCenterPosition)
     {
-        DrawTreeConnection(treeConnectionBackwardsLR, treeCenterPosition, Radius - TierHeight / 2f);
+        Material lineMaterial = _locked ? lockedLineMaterial : unlockedLineMaterial;
+        DrawTreeConnection(treeConnectionBackwardsLR, treeCenterPosition, Radius - TierHeight / 2f, lineMaterial);
     }
 
     private void DrawForwardsTreeConnection(Vector2 treeCenterPosition)
     {
-        DrawTreeConnection(treeConnectionForwardsLR, treeCenterPosition, Radius + TierHeight / 2f);
+        Material lineMaterial = nodeEffect.PurchaseCount > 0 && nodeEffect.config.unlocksChildNodes ? unlockedLineMaterial : lockedLineMaterial;
+        DrawTreeConnection(treeConnectionForwardsLR, treeCenterPosition, Radius + TierHeight / 2f, lineMaterial);
     }
 
-    private void DrawTreeConnection(LineRenderer lr, Vector2 treeCenterPosition, float r)
+    private void DrawTreeConnection(LineRenderer lr, Vector2 treeCenterPosition, float r, Material lineMaterial)
     {
         // Draw line from center of node to a point r directly towards or away from the tree's center
         Vector2 lineEnd = treeCenterPosition + PolarToCartesian(DomainCenter, r);
 
+        lr.material = lineMaterial;
         lr.positionCount = 2;
         lr.SetPosition(0, new(0f, 0f, lineDrawDepth));
         lr.SetPosition(1, new(lineEnd.x, lineEnd.y, lineDrawDepth));
@@ -190,6 +199,8 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
                     .Select(position => new Vector3(position.x, position.y, lineDrawDepth))
                     .ToArray();
 
+            Material lineMaterial = nodeEffect.PurchaseCount > 0 && nodeEffect.config.unlocksChildNodes ? unlockedLineMaterial : lockedLineMaterial;
+            treeArcLR.material = lineMaterial;
             treeArcLR.positionCount = arcPositions.Length;
             treeArcLR.SetPositions(finalPositions);
         }
@@ -204,7 +215,7 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 
     public void Scale(float size)
     {
-        _rTransform.sizeDelta = new(size, size * (3f/2f)); // Slightly taller to accomodate additional UI elements
+        _rTransform.sizeDelta = new Vector2(size, size * (3f/2f)); // Slightly taller to accomodate additional UI elements.
 
         if (childNodes.Count > 0)
         {
@@ -317,6 +328,8 @@ public class Node : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
                     child.Unlock();
                 }
             }
+
+            DrawLines(_mostRecentArcSegments, _mostRecentTreeCenterPosition);
         }
     }
 

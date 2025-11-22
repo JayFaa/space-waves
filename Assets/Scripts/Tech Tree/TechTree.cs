@@ -5,6 +5,7 @@ using UnityEngine;
 public class TechTree : MonoBehaviour
 {
     [SerializeField] List<Node> branchRoots;
+    [SerializeField] RectTransform centerImage;
     [SerializeField] int arcSegments = 16;
     [SerializeField] int bufferPixels = 0;
 
@@ -92,6 +93,7 @@ public class TechTree : MonoBehaviour
         float maxNodeSize = branchRoots.Select(root => root.LargestPossibleNodeSize(bufferPixels)).Min();
         foreach (Node root in branchRoots)
         {
+            centerImage.sizeDelta = new Vector2(maxNodeSize, maxNodeSize) * 2;
             root.Scale(maxNodeSize);
         }
     }
