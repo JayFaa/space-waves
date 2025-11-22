@@ -2,11 +2,17 @@ using UnityEngine;
 
 public class StatsManager : MonoBehaviour
 {
+    // Attack-related stats
     public float AttackDamageFlatModifier { get; private set; } = 0f;
     public float AttackDamageMultiplicativeModifier { get; private set; } = 1f;
     public float AttackSpeedMultiplier { get; private set; } = 1f;
     public int BurstFireShotCount { get; private set; } = 1;
     public int SpreadFireShotCount { get; private set; } = 1;
+
+    // Defense-related stats
+    public int MaxHealthBonusFlat { get; private set; } = 0;
+    public int ShieldBonusFlat { get; private set; } = 0;
+    public float DamageReduction { get; private set; } = 1f;
 
     void Awake()
     {
@@ -46,5 +52,11 @@ public class StatsManager : MonoBehaviour
     {
         SpreadFireShotCount += additionalShots;
         Debug.Log($"Increased spread fire shot count by {additionalShots}. New spread fire shot count: {SpreadFireShotCount}");
+    }
+
+    public void IncreaseMaxHealthFlat(int amount)
+    {
+        MaxHealthBonusFlat += amount;
+        Debug.Log($"Increased health by {amount}. New health bonus flat: {MaxHealthBonusFlat}");
     }
 }

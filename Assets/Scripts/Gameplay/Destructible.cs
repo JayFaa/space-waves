@@ -17,6 +17,7 @@ public class Destructible : MonoBehaviour
 
     // Cached references
     private GameManager gameManager;
+    private StatsManager statsManager;
     private ShipUIManager uiManager;
 
     private int _currentShield;
@@ -30,13 +31,14 @@ public class Destructible : MonoBehaviour
     void Awake()
     {
         gameManager = FindFirstObjectByType<GameManager>();
+        statsManager = FindFirstObjectByType<StatsManager>();
         uiManager = FindFirstObjectByType<ShipUIManager>();
     }
 
     void Start()
     {
-        _currentShield = maxShield;
-        _currentHealth = maxHealth;
+        _currentShield = GetUpgradedMaxShield();
+        _currentHealth = GetUpgradedMaxHealth();
         UpdateUI();
     }
 
@@ -51,14 +53,16 @@ public class Destructible : MonoBehaviour
         // Add to last damage taken timer, but don't let it grow unbounded
         if (_timeSinceLastDamage < shieldRegenDelay) _timeSinceLastDamage += Time.deltaTime;
 
+        int currentMaxShield = GetUpgradedMaxShield();
+
         // Regenerate shield if enough time has passed since last damage
-        if (_timeSinceLastDamage >= shieldRegenDelay && _currentShield < maxShield)
+        if (_timeSinceLastDamage >= shieldRegenDelay && _currentShield < currentMaxShield)
         {
             _shieldRegenAccumulator += shieldRegenRate * Time.deltaTime;
             int shieldToRegen = Mathf.FloorToInt(_shieldRegenAccumulator);
             if (shieldToRegen > 0)
             {
-                _currentShield = Mathf.Min(_currentShield + shieldToRegen, maxShield);
+                _currentShield = Mathf.Min(_currentShield + shieldToRegen, currentMaxShield);
                 _shieldRegenAccumulator -= shieldToRegen;
                 UpdateShieldUI();
             }
@@ -106,8 +110,8 @@ public class Destructible : MonoBehaviour
         // Reload scene if player dies
         if (gameObject.CompareTag("Player")){
             gameManager.ResetGame();
-            _currentHealth = maxHealth;
-            _currentShield = maxShield;
+            _currentHealth = GetUpgradedMaxHealth();
+            _currentShield = GetUpgradedMaxShield();
             UpdateUI();
         }
         else
@@ -116,17 +120,33 @@ public class Destructible : MonoBehaviour
         }
     }
 
-    private void UpdateUI()
+    public void UpdateUI()
     {
         UpdateShieldUI();
         UpdateHealthUI();
+    }
+
+    public void Heal(int amount)
+    {
+        _currentHealth = Mathf.Min(_currentHealth + amount, GetUpgradedMaxHealth());
+        UpdateHealthUI();
+    }
+
+    private int GetUpgradedMaxHealth()
+    {
+        return maxHealth + statsManager.MaxHealthBonusFlat;
+    }
+
+    private int GetUpgradedMaxShield()
+    {
+        return maxShield + statsManager.ShieldBonusFlat;
     }
 
     private void UpdateShieldUI()
     {
         if (gameObject.CompareTag("Player"))
         {
-            uiManager.UpdateShield(_currentShield, maxShield);
+            uiManager.UpdateShield(_currentShield, GetUpgradedMaxShield());
         }
     }
 
@@ -134,7 +154,7 @@ public class Destructible : MonoBehaviour
     {
         if (gameObject.CompareTag("Player"))
         {
-            uiManager.UpdateHealth(_currentHealth, maxHealth);
+            uiManager.UpdateHealth(_currentHealth, GetUpgradedMaxHealth());
         }
     }
 

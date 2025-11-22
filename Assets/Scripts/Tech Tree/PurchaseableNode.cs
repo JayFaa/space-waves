@@ -6,6 +6,7 @@ public abstract class PurchaseableNode : MonoBehaviour
 
     protected StatsManager statsManager;
     protected ResourceManager resourceManager;
+    protected Destructible playerDestructible;
 
     public int PurchaseCount { get; private set; }
 
@@ -15,6 +16,7 @@ public abstract class PurchaseableNode : MonoBehaviour
     {
         statsManager = FindFirstObjectByType<StatsManager>();
         resourceManager = FindFirstObjectByType<ResourceManager>();
+        playerDestructible = FindFirstObjectByType<PlayerMovement>().gameObject.GetComponent<Destructible>();
         PurchaseCount = 0;
     }
 
