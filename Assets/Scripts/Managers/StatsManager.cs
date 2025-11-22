@@ -18,6 +18,7 @@ public class StatsManager : MonoBehaviour
 
     // Mobility-related stats
     public float DashInvincibilityDuration { get; private set; } = 0f;
+    public float DashSlamDamageMultiplicative { get; private set; } = 1f;
 
     void Awake()
     {
@@ -28,6 +29,10 @@ public class StatsManager : MonoBehaviour
         }
         DontDestroyOnLoad(gameObject);
     }
+
+    // *********************
+    // Attack Node Effects
+    // *********************
 
     public void IncreaseAttackDamageFlat(float amount)
     {
@@ -59,6 +64,10 @@ public class StatsManager : MonoBehaviour
         Debug.Log($"Increased spread fire shot count by {additionalShots}. New spread fire shot count: {SpreadFireShotCount}");
     }
 
+    // *********************
+    // Defense Node Effects
+    // *********************
+
     public void IncreaseMaxHealthFlat(int amount)
     {
         MaxHealthBonusFlat += amount;
@@ -89,9 +98,19 @@ public class StatsManager : MonoBehaviour
         Debug.Log($"Increased health regen at full shield by {amount}. New health regen at full shield: {HealthRegenAtFullShield}");
     }
 
+    // *********************
+    // Mobility Node Effects
+    // *********************
+
     public void IncreaseDashInvincibilityDuration(float amount)
     {
         DashInvincibilityDuration += amount;
         Debug.Log($"Increased dash invincibility duration by {amount}. New dash invincibility duration: {DashInvincibilityDuration}");
+    }
+
+    public void IncreaseDashSlamDamageMultiplicative(float multiplier)
+    {
+        DashSlamDamageMultiplicative *= multiplier;
+        Debug.Log($"Increased dash slam damage multiplicatively by {multiplier}. New dash slam damage multiplicative: {DashSlamDamageMultiplicative}");
     }
 }

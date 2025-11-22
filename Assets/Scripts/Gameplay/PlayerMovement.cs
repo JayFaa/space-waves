@@ -8,6 +8,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float baseEngineThrust = 50f;
     [SerializeField] float dashDistance = 2f;
     [SerializeField] float dashCooldown = 1f;
+    [SerializeField] float collisionDamageDealt = 100f;
+    [SerializeField] float collisionDamageTaken = 20f;
     [SerializeField] SphereCollider shipCollider;
     [SerializeField] SphereCollider lootCollider;
 
@@ -21,6 +23,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 _movementInput;
     private Vector2 _mostRecentMovementInput;
     private float _timeSinceLastDash = 0f;
+    private bool _dealBonusDamage = false;
 
     void Awake()
     {
@@ -82,6 +85,7 @@ public class PlayerMovement : MonoBehaviour
         {
             // If we hit something, dash only up to the hit point
             distance = hit.distance;
+            _dealBonusDamage = true;
         }
         else
         {
@@ -115,15 +119,19 @@ public class PlayerMovement : MonoBehaviour
 
             // Deal collision damage to enemy
             if (other.gameObject.TryGetComponent(out Destructible enemyHealth)) {
-                enemyHealth.TakeDamage(100f, -other.contacts[0].normal); // Deal damage to the enemy on collision
+                float damageAmount = _dealBonusDamage ? collisionDamageDealt * statsManager.DashSlamDamageMultiplicative : collisionDamageDealt;
+                enemyHealth.TakeDamage(damageAmount, -other.contacts[0].normal);
             }
 
             // Deal collision damage to player
             if (TryGetComponent(out Destructible playerHealth)) {
-                playerHealth.TakeDamage(20f, other.contacts[0].normal); // Player takes damage on collision
+                playerHealth.TakeDamage(collisionDamageTaken, other.contacts[0].normal);
             } else {
                 Debug.LogWarning("Player does not have a Health component!");
             }
         }
+        
+        // Reset bonus damage flag even if the thing hit wasn't dealt damage
+        _dealBonusDamage = false;
     }
 }
