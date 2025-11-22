@@ -22,7 +22,7 @@ public class PlayerMovement : MonoBehaviour
     // Internal fields
     private Vector2 _movementInput;
     private Vector2 _mostRecentMovementInput;
-    private float _timeSinceLastDash = 0f;
+    private float _timeSinceLastDash;
     private bool _dealBonusDamage = false;
 
     void Awake()
@@ -32,6 +32,9 @@ public class PlayerMovement : MonoBehaviour
 
         gameManager = FindFirstObjectByType<GameManager>();
         statsManager = FindFirstObjectByType<StatsManager>();
+
+        // Allow player to dash immediately at the start of the game
+        _timeSinceLastDash = dashCooldown * statsManager.DashCooldownReductionMultiplicative;
     }
 
     void Update()
@@ -66,7 +69,7 @@ public class PlayerMovement : MonoBehaviour
     public void OnDash(InputValue value)
     {
         if (!gameManager.GameIsActive) return;
-        if (value.isPressed && _timeSinceLastDash >= dashCooldown)
+        if (value.isPressed && _timeSinceLastDash >= dashCooldown * statsManager.DashCooldownReductionMultiplicative)
         {
             Vector3 dashDirection = new Vector3(_mostRecentMovementInput.x, 0, _mostRecentMovementInput.y).normalized;
             if (dashDirection != Vector3.zero)
@@ -130,7 +133,7 @@ public class PlayerMovement : MonoBehaviour
                 Debug.LogWarning("Player does not have a Health component!");
             }
         }
-        
+
         // Reset bonus damage flag even if the thing hit wasn't dealt damage
         _dealBonusDamage = false;
     }

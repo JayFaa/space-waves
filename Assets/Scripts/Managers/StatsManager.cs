@@ -19,6 +19,7 @@ public class StatsManager : MonoBehaviour
     // Mobility-related stats
     public float DashInvincibilityDuration { get; private set; } = 0f;
     public float DashSlamDamageMultiplicative { get; private set; } = 1f;
+    public float DashCooldownReductionMultiplicative { get; private set; } = 1f;
 
     void Awake()
     {
@@ -112,5 +113,11 @@ public class StatsManager : MonoBehaviour
     {
         DashSlamDamageMultiplicative *= multiplier;
         Debug.Log($"Increased dash slam damage multiplicatively by {multiplier}. New dash slam damage multiplicative: {DashSlamDamageMultiplicative}");
+    }
+
+    public void IncreaseDashCooldownReductionMultiplicative(float multiplier)
+    {
+        DashCooldownReductionMultiplicative -= (multiplier - 1) * DashCooldownReductionMultiplicative;
+        Debug.Log($"Increased dash cooldown reduction multiplicatively by {multiplier}. New dash cooldown reduction multiplicative: {DashCooldownReductionMultiplicative}");
     }
 }
