@@ -21,6 +21,7 @@ public class StatsManager : MonoBehaviour
     public float DashSlamDamageMultiplicative { get; private set; } = 1f;
     public float DashCooldownReductionMultiplicative { get; private set; } = 1f;
     public float DashDistanceBonusMultiplicative { get; private set; } = 1f;
+    public float MovementSpeedMultiplicative { get; private set; } = 1f;
 
     void Awake()
     {
@@ -126,5 +127,11 @@ public class StatsManager : MonoBehaviour
     {
         DashDistanceBonusMultiplicative *= multiplier;
         Debug.Log($"Increased dash distance bonus multiplicatively by {multiplier}. New dash distance bonus multiplicative: {DashDistanceBonusMultiplicative}");
+    }
+
+    public void IncreaseMovementSpeedMultiplicative(float multiplier)
+    {
+        MovementSpeedMultiplicative *= multiplier;
+        Debug.Log($"Increased movement speed multiplicatively by {multiplier}. New movement speed multiplicative: {MovementSpeedMultiplicative}");
     }
 }

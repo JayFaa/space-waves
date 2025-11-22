@@ -51,7 +51,7 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
-        rb.AddForce(baseEngineThrust * Time.fixedDeltaTime * new Vector3(_movementInput.x, 0, _movementInput.y));
+        rb.AddForce(baseEngineThrust * Time.fixedDeltaTime * statsManager.MovementSpeedMultiplicative * new Vector3(_movementInput.x, 0, _movementInput.y));
     }
 
     public void OnMove(InputValue value)
