@@ -16,6 +16,13 @@ public class StatsManager : MonoBehaviour
     public float ShieldRegenRateMultiplicative { get; private set; } = 1f;
     public float HealthRegenAtFullShield { get; private set; } = 0f;
 
+    // Mobility-related stats
+    public float DashInvincibilityDuration { get; private set; } = 0f;
+    public float DashSlamDamageMultiplicative { get; private set; } = 1f;
+    public float DashCooldownReductionMultiplicative { get; private set; } = 1f;
+    public float DashDistanceBonusMultiplicative { get; private set; } = 1f;
+    public float MovementSpeedMultiplicative { get; private set; } = 1f;
+
     void Awake()
     {
         if (FindAnyObjectByType<StatsManager>() != this)
@@ -25,6 +32,10 @@ public class StatsManager : MonoBehaviour
         }
         DontDestroyOnLoad(gameObject);
     }
+
+    // *********************
+    // Attack Node Effects
+    // *********************
 
     public void IncreaseAttackDamageFlat(float amount)
     {
@@ -56,6 +67,10 @@ public class StatsManager : MonoBehaviour
         Debug.Log($"Increased spread fire shot count by {additionalShots}. New spread fire shot count: {SpreadFireShotCount}");
     }
 
+    // *********************
+    // Defense Node Effects
+    // *********************
+
     public void IncreaseMaxHealthFlat(int amount)
     {
         MaxHealthBonusFlat += amount;
@@ -84,5 +99,39 @@ public class StatsManager : MonoBehaviour
     {
         HealthRegenAtFullShield += amount;
         Debug.Log($"Increased health regen at full shield by {amount}. New health regen at full shield: {HealthRegenAtFullShield}");
+    }
+
+    // *********************
+    // Mobility Node Effects
+    // *********************
+
+    public void IncreaseDashInvincibilityDuration(float amount)
+    {
+        DashInvincibilityDuration += amount;
+        Debug.Log($"Increased dash invincibility duration by {amount}. New dash invincibility duration: {DashInvincibilityDuration}");
+    }
+
+    public void IncreaseDashSlamDamageMultiplicative(float multiplier)
+    {
+        DashSlamDamageMultiplicative *= multiplier;
+        Debug.Log($"Increased dash slam damage multiplicatively by {multiplier}. New dash slam damage multiplicative: {DashSlamDamageMultiplicative}");
+    }
+
+    public void IncreaseDashCooldownReductionMultiplicative(float multiplier)
+    {
+        DashCooldownReductionMultiplicative -= (multiplier - 1) * DashCooldownReductionMultiplicative;
+        Debug.Log($"Increased dash cooldown reduction multiplicatively by {multiplier}. New dash cooldown reduction multiplicative: {DashCooldownReductionMultiplicative}");
+    }
+
+    public void IncreaseDashDistanceBonusMultiplicative(float multiplier)
+    {
+        DashDistanceBonusMultiplicative *= multiplier;
+        Debug.Log($"Increased dash distance bonus multiplicatively by {multiplier}. New dash distance bonus multiplicative: {DashDistanceBonusMultiplicative}");
+    }
+
+    public void IncreaseMovementSpeedMultiplicative(float multiplier)
+    {
+        MovementSpeedMultiplicative *= multiplier;
+        Debug.Log($"Increased movement speed multiplicatively by {multiplier}. New movement speed multiplicative: {MovementSpeedMultiplicative}");
     }
 }

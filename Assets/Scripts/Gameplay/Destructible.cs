@@ -3,9 +3,7 @@ using UnityEngine;
 public class Destructible : MonoBehaviour
 {
     [SerializeField] int maxHealth = 100;
-
-    [SerializeField] bool invincibleOnHit = false;
-    [SerializeField] float invincibilityWindow = 0.2f;
+    [SerializeField] GameObject invincibilityEffect;
 
     [SerializeField] bool hasShield = false;
     [SerializeField] int maxShield = 50;
@@ -26,6 +24,9 @@ public class Destructible : MonoBehaviour
     private float _leftoverDamage = 0f;
     private float _shieldRegenAccumulator = 0f;
     private float _timeSinceLastDamage = 0f;
+    private bool _isInvincible = false;
+    private float _invincibilityTimer = 0f;
+    private float _invincibilityWindow = 0f;
     private Vector3 _mostRecentDamageDirection = Vector3.back;
     private bool _quitting = false;
 
@@ -48,6 +49,29 @@ public class Destructible : MonoBehaviour
         if (!gameManager.GameIsActive) return;
         if (hasShield) RechargeShield();
         RechargeHealth();
+        UpdateInvincibility();
+    }
+
+    private void UpdateInvincibility()
+    {
+        if (_isInvincible)
+        {
+            _invincibilityTimer += Time.deltaTime;
+            if (_invincibilityTimer >= _invincibilityWindow)
+            {
+                _isInvincible = false;
+                if (invincibilityEffect != null) invincibilityEffect.SetActive(false);
+                _invincibilityTimer = 0f;
+            }
+        }
+    }
+
+    public void MakeInvincible(float duration)
+    {
+        _isInvincible = true;
+        if (invincibilityEffect != null) invincibilityEffect.SetActive(true);
+        _invincibilityWindow = duration;
+        _invincibilityTimer = 0f;
     }
 
     private void RechargeHealth()
@@ -94,7 +118,7 @@ public class Destructible : MonoBehaviour
 
     public void TakeDamage(float damage, Vector3 direction)
     {
-        if (invincibleOnHit && _timeSinceLastDamage < invincibilityWindow) return;
+        if (_isInvincible) return;
 
         // Apply damage reduction if the player is being damaged
         if (gameObject.CompareTag("Player")) damage *= statsManager.DamageReductionMultiplicative;
