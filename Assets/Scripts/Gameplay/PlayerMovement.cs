@@ -13,7 +13,9 @@ public class PlayerMovement : MonoBehaviour
 
     // Cached references
     private Rigidbody rb;
+    private Destructible playerDestructible;
     private GameManager gameManager;
+    private StatsManager statsManager;
 
     // Internal fields
     private Vector2 _movementInput;
@@ -23,7 +25,10 @@ public class PlayerMovement : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        playerDestructible = GetComponent<Destructible>();
+
         gameManager = FindFirstObjectByType<GameManager>();
+        statsManager = FindFirstObjectByType<StatsManager>();
     }
 
     void Update()
@@ -94,6 +99,8 @@ public class PlayerMovement : MonoBehaviour
             }
         }
         rb.MovePosition(transform.position + direction * distance);
+        float dashInvincibilityDuration = statsManager.DashInvincibilityDuration;
+        if (dashInvincibilityDuration > 0f) playerDestructible.MakeInvincible(dashInvincibilityDuration);
 
         // Reset dash cooldown
         _timeSinceLastDash = 0f;

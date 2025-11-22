@@ -16,6 +16,9 @@ public class StatsManager : MonoBehaviour
     public float ShieldRegenRateMultiplicative { get; private set; } = 1f;
     public float HealthRegenAtFullShield { get; private set; } = 0f;
 
+    // Mobility-related stats
+    public float DashInvincibilityDuration { get; private set; } = 0f;
+
     void Awake()
     {
         if (FindAnyObjectByType<StatsManager>() != this)
@@ -84,5 +87,11 @@ public class StatsManager : MonoBehaviour
     {
         HealthRegenAtFullShield += amount;
         Debug.Log($"Increased health regen at full shield by {amount}. New health regen at full shield: {HealthRegenAtFullShield}");
+    }
+
+    public void IncreaseDashInvincibilityDuration(float amount)
+    {
+        DashInvincibilityDuration += amount;
+        Debug.Log($"Increased dash invincibility duration by {amount}. New dash invincibility duration: {DashInvincibilityDuration}");
     }
 }
