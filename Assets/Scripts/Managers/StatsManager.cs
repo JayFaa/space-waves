@@ -59,4 +59,10 @@ public class StatsManager : MonoBehaviour
         MaxHealthBonusFlat += amount;
         Debug.Log($"Increased health by {amount}. New health bonus flat: {MaxHealthBonusFlat}");
     }
+
+    public void IncreaseMaxShieldFlat(int amount)
+    {
+        ShieldBonusFlat += amount;
+        Debug.Log($"Increased shield by {amount}. New shield bonus flat: {ShieldBonusFlat}");
+    }
 }
