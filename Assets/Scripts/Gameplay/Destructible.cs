@@ -77,7 +77,11 @@ public class Destructible : MonoBehaviour
         // Regenerate shield if enough time has passed since last damage
         if (_timeSinceLastDamage >= shieldRegenDelay && _currentShield < currentMaxShield)
         {
-            _shieldRegenAccumulator += shieldRegenRate * Time.deltaTime;
+            float adjustedShieldRegenRate = shieldRegenRate;
+            if (gameObject.CompareTag("Player")) adjustedShieldRegenRate *= statsManager.ShieldRegenRateMultiplicative;
+            
+            _shieldRegenAccumulator += adjustedShieldRegenRate * Time.deltaTime;
+
             int shieldToRegen = Mathf.FloorToInt(_shieldRegenAccumulator);
             if (shieldToRegen > 0)
             {

@@ -13,6 +13,7 @@ public class StatsManager : MonoBehaviour
     public int MaxHealthBonusFlat { get; private set; } = 0;
     public int ShieldBonusFlat { get; private set; } = 0;
     public float DamageReductionMultiplicative { get; private set; } = 1f;
+    public float ShieldRegenRateMultiplicative { get; private set; } = 1f;
     public float HealthRegenAtFullShield { get; private set; } = 0f;
 
     void Awake()
@@ -71,6 +72,12 @@ public class StatsManager : MonoBehaviour
     {
         DamageReductionMultiplicative -= (multiplier - 1) * DamageReductionMultiplicative;
         Debug.Log($"Increased damage reduction by {multiplier}. New damage reduction: {DamageReductionMultiplicative}");
+    }
+
+    public void IncreaseShieldRegenRate(float multiplier)
+    {
+        ShieldRegenRateMultiplicative *= multiplier;
+        Debug.Log($"Increased shield regen rate by {multiplier}. New shield regen rate multiplier: {ShieldRegenRateMultiplicative}");
     }
 
     public void IncreaseHealthRegenAtFullShield(float amount)
