@@ -12,7 +12,7 @@ public class StatsManager : MonoBehaviour
     // Defense-related stats
     public int MaxHealthBonusFlat { get; private set; } = 0;
     public int ShieldBonusFlat { get; private set; } = 0;
-    public float DamageReduction { get; private set; } = 1f;
+    public float DamageReductionMultiplicative { get; private set; } = 1f;
 
     void Awake()
     {
@@ -64,5 +64,11 @@ public class StatsManager : MonoBehaviour
     {
         ShieldBonusFlat += amount;
         Debug.Log($"Increased shield by {amount}. New shield bonus flat: {ShieldBonusFlat}");
+    }
+
+    public void IncreaseDamageReduction(float multiplier)
+    {
+        DamageReductionMultiplicative -= (multiplier - 1) * DamageReductionMultiplicative;
+        Debug.Log($"Increased damage reduction by {multiplier}. New damage reduction: {DamageReductionMultiplicative}");
     }
 }

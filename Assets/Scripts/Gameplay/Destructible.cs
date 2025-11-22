@@ -73,6 +73,9 @@ public class Destructible : MonoBehaviour
     {
         if (invincibleOnHit && _timeSinceLastDamage < invincibilityWindow) return;
 
+        // Apply damage reduction if the player is being damaged
+        if (gameObject.CompareTag("Player")) damage *= statsManager.DamageReductionMultiplicative;
+
         Debug.Log($"{gameObject.name} took {damage} damage.");
 
         if (damage > 0){
@@ -134,12 +137,18 @@ public class Destructible : MonoBehaviour
 
     private int GetUpgradedMaxHealth()
     {
-        return maxHealth + statsManager.MaxHealthBonusFlat;
+        if (gameObject.CompareTag("Player"))
+            return maxHealth + statsManager.MaxHealthBonusFlat;
+        else
+            return maxHealth;
     }
 
     private int GetUpgradedMaxShield()
     {
-        return maxShield + statsManager.ShieldBonusFlat;
+        if (gameObject.CompareTag("Player"))
+            return maxShield + statsManager.ShieldBonusFlat;
+        else
+            return maxShield;
     }
 
     private void UpdateShieldUI()
