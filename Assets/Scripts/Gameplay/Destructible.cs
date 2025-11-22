@@ -22,6 +22,7 @@ public class Destructible : MonoBehaviour
 
     private int _currentShield;
     private int _currentHealth;
+    private float _regenHealthAccumulator = 0f;
     private float _leftoverDamage = 0f;
     private float _shieldRegenAccumulator = 0f;
     private float _timeSinceLastDamage = 0f;
@@ -46,9 +47,27 @@ public class Destructible : MonoBehaviour
     {
         if (!gameManager.GameIsActive) return;
         if (hasShield) RechargeShield();
+        RechargeHealth();
     }
 
-    void RechargeShield()
+    private void RechargeHealth()
+    {
+        // Early out if no health regen configured
+        if (statsManager.HealthRegenAtFullShield <= 0f) return;
+
+        // Regenerate health if shield is full
+        if (_currentShield >= GetUpgradedMaxShield()){
+            _regenHealthAccumulator += statsManager.HealthRegenAtFullShield * Time.deltaTime;
+            int healthToRegen = Mathf.FloorToInt(_regenHealthAccumulator);
+            if (healthToRegen > 0)
+            {
+                Heal(healthToRegen);
+                _regenHealthAccumulator -= healthToRegen;
+            }
+        }
+    }
+
+    private void RechargeShield()
     {
         // Add to last damage taken timer, but don't let it grow unbounded
         if (_timeSinceLastDamage < shieldRegenDelay) _timeSinceLastDamage += Time.deltaTime;
