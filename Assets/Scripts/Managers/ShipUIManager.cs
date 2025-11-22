@@ -4,7 +4,9 @@ using UnityEngine.UI;
 public class ShipUIManager : MonoBehaviour
 {
     [SerializeField] Slider healthBar;
+    [SerializeField] TMPro.TextMeshProUGUI healthText;
     [SerializeField] Slider shieldBar;
+    [SerializeField] TMPro.TextMeshProUGUI shieldText;
     [SerializeField] TMPro.TextMeshProUGUI resourceText;
 
     void Awake()
@@ -20,11 +22,13 @@ public class ShipUIManager : MonoBehaviour
     public void UpdateHealth(float currentHealth, float maxHealth)
     {
         healthBar.value = currentHealth / maxHealth;
+        healthText.text = $"{currentHealth} / {maxHealth}";
     }
 
     public void UpdateShield(float currentShield, float maxShield)
     {
         shieldBar.value = currentShield / maxShield;
+        shieldText.text = $"{currentShield} / {maxShield}";
     }
 
     public void UpdateResourceCount(int count)

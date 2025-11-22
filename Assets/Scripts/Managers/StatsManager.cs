@@ -2,11 +2,19 @@ using UnityEngine;
 
 public class StatsManager : MonoBehaviour
 {
+    // Attack-related stats
     public float AttackDamageFlatModifier { get; private set; } = 0f;
     public float AttackDamageMultiplicativeModifier { get; private set; } = 1f;
     public float AttackSpeedMultiplier { get; private set; } = 1f;
     public int BurstFireShotCount { get; private set; } = 1;
     public int SpreadFireShotCount { get; private set; } = 1;
+
+    // Defense-related stats
+    public int MaxHealthBonusFlat { get; private set; } = 0;
+    public int ShieldBonusFlat { get; private set; } = 0;
+    public float DamageReductionMultiplicative { get; private set; } = 1f;
+    public float ShieldRegenRateMultiplicative { get; private set; } = 1f;
+    public float HealthRegenAtFullShield { get; private set; } = 0f;
 
     void Awake()
     {
@@ -46,5 +54,35 @@ public class StatsManager : MonoBehaviour
     {
         SpreadFireShotCount += additionalShots;
         Debug.Log($"Increased spread fire shot count by {additionalShots}. New spread fire shot count: {SpreadFireShotCount}");
+    }
+
+    public void IncreaseMaxHealthFlat(int amount)
+    {
+        MaxHealthBonusFlat += amount;
+        Debug.Log($"Increased health by {amount}. New health bonus flat: {MaxHealthBonusFlat}");
+    }
+
+    public void IncreaseMaxShieldFlat(int amount)
+    {
+        ShieldBonusFlat += amount;
+        Debug.Log($"Increased shield by {amount}. New shield bonus flat: {ShieldBonusFlat}");
+    }
+
+    public void IncreaseDamageReduction(float multiplier)
+    {
+        DamageReductionMultiplicative -= (multiplier - 1) * DamageReductionMultiplicative;
+        Debug.Log($"Increased damage reduction by {multiplier}. New damage reduction: {DamageReductionMultiplicative}");
+    }
+
+    public void IncreaseShieldRegenRate(float multiplier)
+    {
+        ShieldRegenRateMultiplicative *= multiplier;
+        Debug.Log($"Increased shield regen rate by {multiplier}. New shield regen rate multiplier: {ShieldRegenRateMultiplicative}");
+    }
+
+    public void IncreaseHealthRegenAtFullShield(float amount)
+    {
+        HealthRegenAtFullShield += amount;
+        Debug.Log($"Increased health regen at full shield by {amount}. New health regen at full shield: {HealthRegenAtFullShield}");
     }
 }
