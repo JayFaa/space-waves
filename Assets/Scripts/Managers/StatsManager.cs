@@ -20,6 +20,7 @@ public class StatsManager : MonoBehaviour
     public float DashInvincibilityDuration { get; private set; } = 0f;
     public float DashSlamDamageMultiplicative { get; private set; } = 1f;
     public float DashCooldownReductionMultiplicative { get; private set; } = 1f;
+    public float DashDistanceBonusMultiplicative { get; private set; } = 1f;
 
     void Awake()
     {
@@ -119,5 +120,11 @@ public class StatsManager : MonoBehaviour
     {
         DashCooldownReductionMultiplicative -= (multiplier - 1) * DashCooldownReductionMultiplicative;
         Debug.Log($"Increased dash cooldown reduction multiplicatively by {multiplier}. New dash cooldown reduction multiplicative: {DashCooldownReductionMultiplicative}");
+    }
+
+    public void IncreaseDashDistanceBonusMultiplicative(float multiplier)
+    {
+        DashDistanceBonusMultiplicative *= multiplier;
+        Debug.Log($"Increased dash distance bonus multiplicatively by {multiplier}. New dash distance bonus multiplicative: {DashDistanceBonusMultiplicative}");
     }
 }

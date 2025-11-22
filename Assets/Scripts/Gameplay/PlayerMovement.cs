@@ -84,7 +84,8 @@ public class PlayerMovement : MonoBehaviour
 
         // Raycast ship collider in the dash direction to check for collisions
         float distance;
-        if (Physics.SphereCast(transform.position, shipCollider.radius, direction, out RaycastHit hit, dashDistance, ~LayerMask.GetMask("Loot")))
+        float maxDashDistance = dashDistance * statsManager.DashDistanceBonusMultiplicative;
+        if (Physics.SphereCast(transform.position, shipCollider.radius, direction, out RaycastHit hit, maxDashDistance, ~LayerMask.GetMask("Loot")))
         {
             // If we hit something, dash only up to the hit point
             distance = hit.distance;
@@ -93,7 +94,7 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             // No collision, dash full distance
-            distance = dashDistance;
+            distance = maxDashDistance;
         }
 
         RaycastHit[] lootHits = Physics.SphereCastAll(transform.position, lootCollider.radius, direction, distance, LayerMask.GetMask("Loot"));
