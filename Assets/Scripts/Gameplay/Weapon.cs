@@ -28,7 +28,7 @@ public class Weapon : MonoBehaviour
 
     void Update()
     {
-        if (!gameManager.GameIsActive) return;
+        if (!gameManager.GameIsActive || gameManager.GameIsResetting) return;
         
         Aim();
         Shoot();

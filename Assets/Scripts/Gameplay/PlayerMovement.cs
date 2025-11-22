@@ -34,7 +34,7 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (!gameManager.GameIsActive)
+        if (!gameManager.GameIsActive || gameManager.GameIsResetting)
         {
             rb.linearVelocity = Vector3.zero;
             return;

@@ -118,7 +118,7 @@ public class Destructible : MonoBehaviour
             flooredDamage -= shieldDamage;
         }
 
-        _currentHealth -= flooredDamage;
+        _currentHealth = Mathf.Max(_currentHealth - flooredDamage, 0);
         UpdateUI();
 
         if (_currentHealth <= 0)
@@ -131,10 +131,10 @@ public class Destructible : MonoBehaviour
     {
         // Reload scene if player dies
         if (gameObject.CompareTag("Player")){
-            gameManager.ResetGame();
+            UpdateUI();
             _currentHealth = GetUpgradedMaxHealth();
             _currentShield = GetUpgradedMaxShield();
-            UpdateUI();
+            gameManager.ResetGame();
         }
         else
         {

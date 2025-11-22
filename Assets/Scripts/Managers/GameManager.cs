@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
     public bool GameIsResetting { get; private set; } = false;
 
     private Canvas _treeCanvas;
+    private Destructible _playerDestructible;
     private Transform _playerTransform;
 
     void Awake()
@@ -20,7 +21,10 @@ public class GameManager : MonoBehaviour
         GameIsActive = true;
 
         _treeCanvas = FindFirstObjectByType<Canvas>(FindObjectsInactive.Include);
-        _playerTransform = FindFirstObjectByType<PlayerMovement>().transform;
+
+        PlayerMovement player = FindFirstObjectByType<PlayerMovement>();
+        _playerTransform = player.transform;
+        _playerDestructible = player.GetComponent<Destructible>();
     }
 
     public void PauseGame()
@@ -66,6 +70,7 @@ public class GameManager : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
+        _playerDestructible.UpdateUI();
         _playerTransform.position = Vector3.zero;
         GameIsResetting = false;
     }
