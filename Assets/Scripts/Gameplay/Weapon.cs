@@ -88,5 +88,6 @@ public class Weapon : MonoBehaviour
     public void OnShoot(InputValue value)
     {
         _isShooting = value.Get<float>() > 0;
+        gameManager.AcknowledgeTutorialShooting();
     }
 }

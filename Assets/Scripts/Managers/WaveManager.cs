@@ -101,6 +101,9 @@ public class WaveManager : MonoBehaviour
     {
         Debug.Log("Starting tutorial wait period.");
 
+        waveTitleText.text = "Welcome!";
+        waveTitleText.gameObject.SetActive(true);
+
         // Poll the game manager to see when the tutorial is complete and the first wave can start
         WaitForSeconds pollingInterval = new WaitForSeconds(emptyFieldPollingInterval);
         while (gameManager.PlayerIsInTutorial)

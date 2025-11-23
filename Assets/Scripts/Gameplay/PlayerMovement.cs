@@ -64,6 +64,8 @@ public class PlayerMovement : MonoBehaviour
         {
             _mostRecentMovementInput = _movementInput;
         }
+
+        gameManager.AcknowledgeTutorialMovement();
     }
 
     public void OnDash(InputValue value)
@@ -77,6 +79,7 @@ public class PlayerMovement : MonoBehaviour
                 Dash(dashDirection);
             }
         }
+        gameManager.AcknowledgeTutorialDashing();
     }
 
     private void Dash(Vector3 direction)

@@ -12,6 +12,13 @@ public class CameraManager : MonoBehaviour
 
     void Awake()
     {
+        if (FindAnyObjectByType<CameraManager>() != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        DontDestroyOnLoad(gameObject);
+
         _gameManager = FindFirstObjectByType<GameManager>();
         _shipUIManager = FindFirstObjectByType<ShipUIManager>();
     }
@@ -29,6 +36,7 @@ public class CameraManager : MonoBehaviour
                 techTreeCamera.Priority = 1;
                 _gameManager.PauseGame();
                 _shipUIManager.HideText();
+                _gameManager.AcknowledgeTutorialPause();
             }
             else
             {
@@ -36,6 +44,7 @@ public class CameraManager : MonoBehaviour
                 techTreeCamera.Priority = 0;
                 _gameManager.UnpauseGame(1f);
                 _shipUIManager.ShowText();
+                _gameManager.AcknowledgeTutorialUnpause();
             }
         }
     }
