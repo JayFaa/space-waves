@@ -138,7 +138,7 @@ public class GameManager : MonoBehaviour
 
         // Movement tutorial
         movementInput.actions.FindAction("Move").Enable();
-        tutorialText.text = "To move your ship, use WASD.";
+        tutorialText.text = "To move your ship,\nuse WASD.";
         tutorialText.gameObject.SetActive(true);
         yield return new WaitUntil(() => _movementAcknowledged);
         tutorialText.gameObject.SetActive(false);
@@ -146,7 +146,7 @@ public class GameManager : MonoBehaviour
 
         // Shooting tutorial
         shootInput.actions.FindAction("Shoot").Enable();
-        tutorialText.text = "To shoot your weapon, click the left mouse button.";
+        tutorialText.text = "To shoot your weapon,\nclick the left mouse button.";
         tutorialText.gameObject.SetActive(true);
         yield return new WaitUntil(() => _shootAcknowledged);
         tutorialText.gameObject.SetActive(false);
@@ -154,7 +154,7 @@ public class GameManager : MonoBehaviour
 
         // Dashing tutorial
         movementInput.actions.FindAction("Dash").Enable();
-        tutorialText.text = "To dash a short distance instantly, press Shift or the Spacebar.";
+        tutorialText.text = "To dash a short distance instantly,\npress Shift or the Spacebar.";
         tutorialText.gameObject.SetActive(true);
         yield return new WaitUntil(() => _dashAcknowledged);
         tutorialText.gameObject.SetActive(false);
@@ -162,7 +162,7 @@ public class GameManager : MonoBehaviour
 
         // Upgrading tutorial
         upgradeInput.actions.FindAction("Swap").Enable();
-        tutorialText.text = "To open and close the ship upgrades tree, press Tab.";
+        tutorialText.text = "To open and close the ship upgrades tree,\npress Tab.";
         tutorialText.gameObject.SetActive(true);
 
         Debug.Log("Waiting for upgrade acknowledgement.");
