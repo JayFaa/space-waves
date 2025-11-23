@@ -1,39 +1,51 @@
+using System.Collections;
 using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [SerializeField] GameObject enemyPrefab;
-    [SerializeField] float spawnInterval = 1f;
+    [SerializeField] GameObject warningIconPrefab;
+    [SerializeField] float warningDuration = 1.5f;
 
-    // Cached references
     private GameManager gameManager;
-
-    // Internal fields
-    private float _spawnTimeAccumulator = 0f;
 
     void Awake()
     {
         gameManager = FindFirstObjectByType<GameManager>();
     }
 
-    void Update()
+    public IEnumerator SpawnEnemy(GameObject enemyPrefab)
     {
-        if (!gameManager.GameIsActive) return;
+        return SpawnEnemyWithWarning(enemyPrefab);
+    }
 
-        if (gameManager.GameIsResetting)
+    private IEnumerator SpawnEnemyWithWarning(GameObject enemyPrefab)
+    {
+        // Instantiate warning icon
+        GameObject warningIcon = Instantiate(warningIconPrefab, transform.position, Quaternion.AngleAxis(90, Vector3.right));
+
+        // Wait for some time before spawning the next wave
+        float elapsedTime = 0f;
+        while (elapsedTime < warningDuration)
         {
-            _spawnTimeAccumulator = 0f;
-            return;
+            if (!gameManager.GameIsActive)
+            {
+                yield return null;
+                continue;
+            }
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
         }
 
-        if (_spawnTimeAccumulator < spawnInterval)
-        {
-            _spawnTimeAccumulator += Time.deltaTime;
-        }
-        else
-        {
-            Instantiate(enemyPrefab, transform.position, Quaternion.identity);
-            _spawnTimeAccumulator = 0f;
-        }
+        // Destroy warning icon
+        Destroy(warningIcon);
+
+        // Spawn the enemy
+        CreateEnemy(enemyPrefab);
+    }
+
+    private void CreateEnemy(GameObject enemyPrefab)
+    {
+        Instantiate(enemyPrefab, transform.position, Quaternion.identity);
     }
 }

@@ -18,6 +18,9 @@ public class CameraManager : MonoBehaviour
 
     public void OnSwap(InputValue value)
     {
+        // Don't allow camera swapping while resetting
+        if (_gameManager.GameIsResetting) return;
+
         if (value.isPressed)
         {
             if (shipCamera.Priority > techTreeCamera.Priority)

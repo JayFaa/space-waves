@@ -17,6 +17,7 @@ public class Destructible : MonoBehaviour
     private GameManager gameManager;
     private StatsManager statsManager;
     private ShipUIManager uiManager;
+    private WaveManager waveManager;
 
     private int _currentShield;
     private int _currentHealth;
@@ -35,6 +36,7 @@ public class Destructible : MonoBehaviour
         gameManager = FindFirstObjectByType<GameManager>();
         statsManager = FindFirstObjectByType<StatsManager>();
         uiManager = FindFirstObjectByType<ShipUIManager>();
+        waveManager = FindFirstObjectByType<WaveManager>();
     }
 
     void Start()
@@ -163,6 +165,7 @@ public class Destructible : MonoBehaviour
             _currentHealth = GetUpgradedMaxHealth();
             _currentShield = GetUpgradedMaxShield();
             gameManager.ResetGame();
+            waveManager.FailWave();
         }
         else
         {
