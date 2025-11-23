@@ -37,7 +37,7 @@ public class WaveManager : MonoBehaviour
 
     private List<EnemySpawner> _centerSpawners;
 
-    private int _currentWave = 5;
+    private int _currentWave = 0;
     private bool _waveStarted = false;
 
     void Awake()
