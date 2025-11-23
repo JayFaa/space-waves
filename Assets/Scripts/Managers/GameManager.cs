@@ -5,6 +5,7 @@ public class GameManager : MonoBehaviour
 {
     public bool GameIsActive { get; private set; } = false;
     public bool GameIsResetting { get; private set; } = false;
+    public bool PlayerIsInTutorial { get; private set; } = false;
 
     private Canvas _treeCanvas;
     private Destructible _playerDestructible;
@@ -68,7 +69,7 @@ public class GameManager : MonoBehaviour
             Destroy(loot.gameObject);
         }
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(3f);
 
         _playerDestructible.UpdateUI();
         _playerTransform.position = Vector3.zero;
