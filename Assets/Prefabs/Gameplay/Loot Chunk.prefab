@@ -49,6 +49,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   accelerationTowardsMiddle: 2
+  collectSound: {fileID: 8300000, guid: 9bfa1140b70e1b642a922057ad4ddc40, type: 3}
+  collectSoundVolume: 0.3
 --- !u!54 &690598169372993043
 Rigidbody:
   m_ObjectHideFlags: 0

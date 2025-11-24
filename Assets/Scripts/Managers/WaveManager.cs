@@ -25,6 +25,9 @@ public class WaveManager : MonoBehaviour
 
     [SerializeField] EnemySpawner centerSpawner;
 
+    [SerializeField] AudioClip playerExplosionSound;
+    [SerializeField] float playerExplosionSoundVolume = 1f;
+
     private GameManager gameManager;
 
     private List<EnemySpawner> _outerCircleSpawners;
@@ -225,6 +228,8 @@ public class WaveManager : MonoBehaviour
         // Swap center screen message for title text
         centerScreenText.gameObject.SetActive(false);
         waveTitleText.gameObject.SetActive(true);
+
+        yield return new WaitForSeconds(.5f);
     }
 
     private IEnumerator WaveCompleteCoroutine()
@@ -235,14 +240,16 @@ public class WaveManager : MonoBehaviour
         centerScreenText.gameObject.SetActive(true);
 
         yield return new WaitForSeconds(2f);
-
         centerScreenText.gameObject.SetActive(false);
+
+        yield return new WaitForSeconds(.5f);
     }
 
     private IEnumerator WaveFailedCoroutine()
     {
         Debug.Log("Wave failed!");
         enemiesRemainingText.gameObject.SetActive(false);
+        AudioManager.PlayClipAtPoint(playerExplosionSound, transform.position, playerExplosionSoundVolume);
 
         yield return new WaitForSeconds(1f);
 

@@ -4,6 +4,10 @@ public class Projectile : MonoBehaviour
 {
     [SerializeField] private float damage = 25;
 
+    [Header("Audio Clips")]
+    [SerializeField] private AudioClip[] hitSounds;
+    [SerializeField] private float hitSoundVolume = .25f;
+
     public float Speed { get; set; }
 
     private Rigidbody _rb;
@@ -31,8 +35,18 @@ public class Projectile : MonoBehaviour
             float scaledDamage = statsManager.AttackDamageMultiplicativeModifier * (damage + statsManager.AttackDamageFlatModifier);
             Debug.Log($"Projectile dealing {scaledDamage} damage to enemy.");
             enemyHealth.TakeDamage(scaledDamage, -other.contacts[0].normal);
+
+            PlayHitSound(other.contacts[0].point);
         }
 
         Destroy(gameObject);
+    }
+
+    private void PlayHitSound(Vector3 position)
+    {
+        if (hitSounds.Length == 0) return;
+
+        AudioClip clip = hitSounds[Random.Range(0, hitSounds.Length)];
+        AudioManager.PlayClipAtPoint(clip, position, hitSoundVolume);
     }
 }

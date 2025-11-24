@@ -11,6 +11,9 @@ public class Weapon : MonoBehaviour
     [SerializeField] float baseShootCooldown = .5f;
     [SerializeField] float burstFireProportion = .5f;
     [SerializeField] float spreadAngleDegrees = 45f;
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioClip shootSound;
+    [SerializeField] float shootSoundPitchVariance = 0.05f;
 
     // Cached references
     private GameManager gameManager;
@@ -80,9 +83,16 @@ public class Weapon : MonoBehaviour
                 projectile = Instantiate(projectilePrefab, projectileSpawnPoint.position, rotation).GetComponent<Projectile>();
                 projectile.Speed = projectileSpeed;
             }
-
+            
+            PlayShootSound();
             yield return new WaitForSeconds(delayBetweenShots);
         }
+    }
+
+    private void PlayShootSound()
+    {
+        audioSource.pitch = Random.Range(1f - shootSoundPitchVariance, 1f + shootSoundPitchVariance);
+        audioSource.PlayOneShot(shootSound);
     }
 
     public void OnShoot(InputValue value)

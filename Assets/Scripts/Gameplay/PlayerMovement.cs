@@ -10,6 +10,13 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float dashCooldown = 1f;
     [SerializeField] float collisionDamageDealt = 100f;
     [SerializeField] float collisionDamageTaken = 20f;
+    [SerializeField] AudioClip[] collisionSounds;
+    [SerializeField] AudioClip bigCollisionSound;
+    [SerializeField] float collisionSoundVolume = 0.5f;
+    [SerializeField] float bigCollisionSoundVolume = 1f;
+    [SerializeField] AudioClip dashSound;
+    [SerializeField] float dashSoundVolume = 0.8f;
+
     [SerializeField] SphereCollider shipCollider;
     [SerializeField] SphereCollider lootCollider;
 
@@ -113,6 +120,8 @@ public class PlayerMovement : MonoBehaviour
         float dashInvincibilityDuration = statsManager.DashInvincibilityDuration;
         if (dashInvincibilityDuration > 0f) playerDestructible.MakeInvincible(dashInvincibilityDuration);
 
+        AudioManager.PlayClipAtPoint(dashSound, transform.position, dashSoundVolume);
+
         // Reset dash cooldown
         _timeSinceLastDash = 0f;
     }
@@ -137,8 +146,18 @@ public class PlayerMovement : MonoBehaviour
                 Debug.LogWarning("Player does not have a Health component!");
             }
         }
+        if (_dealBonusDamage) AudioManager.PlayClipAtPoint(bigCollisionSound, other.contacts[0].point, bigCollisionSoundVolume);
+        else PlayCollisionSound(other.contacts[0].point);
 
         // Reset bonus damage flag even if the thing hit wasn't dealt damage
         _dealBonusDamage = false;
+    }
+
+    private void PlayCollisionSound(Vector3 position)
+    {
+        if (collisionSounds.Length == 0) return;
+
+        AudioClip clip = collisionSounds[Random.Range(0, collisionSounds.Length)];
+        AudioManager.PlayClipAtPoint(clip, position, collisionSoundVolume);
     }
 }
