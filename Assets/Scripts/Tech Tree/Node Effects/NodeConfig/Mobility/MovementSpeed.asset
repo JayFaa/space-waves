@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0631581c59cefff469167a395a1b8222, type: 3}
   m_Name: MovementSpeed
   m_EditorClassIdentifier: 
-  price: 50
+  price: 5
   maxPurchases: 5
   iconSprite: {fileID: 21300000, guid: c9398fe2e6c988848b85cce8fe3263a2, type: 3}
   nodeColor: {r: 0.6239237, g: 0.9811321, b: 0.5970096, a: 1}

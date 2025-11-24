@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0631581c59cefff469167a395a1b8222, type: 3}
   m_Name: MegaAttackDamageMultiplicative
   m_EditorClassIdentifier: 
-  price: 1500
+  price: 150
   maxPurchases: 1
   iconSprite: {fileID: 21300000, guid: 4bd9ad2f09c33b840bc605c3a8fea4d3, type: 3}
   nodeColor: {r: 1, g: 0.6556604, b: 0.6556604, a: 1}

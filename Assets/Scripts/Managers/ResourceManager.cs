@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ResourceManager : MonoBehaviour
 {
-    public int GoldCount { get; private set; } = 50000;
+    public int GoldCount { get; private set; } = 0;
 
     private ShipUIManager uiManager;
 

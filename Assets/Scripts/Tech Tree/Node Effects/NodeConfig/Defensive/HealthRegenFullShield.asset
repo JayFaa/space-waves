@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0631581c59cefff469167a395a1b8222, type: 3}
   m_Name: HealthRegenFullShield
   m_EditorClassIdentifier: 
-  price: 1000
+  price: 100
   maxPurchases: 1
   iconSprite: {fileID: 21300000, guid: 1d93b66b702665242b25903ba59a53da, type: 3}
   nodeColor: {r: 0.27803493, g: 0.60410774, b: 0.8301887, a: 1}
