@@ -5,6 +5,7 @@ public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] GameObject warningIconPrefab;
     [SerializeField] float warningDuration = 1.5f;
+    [SerializeField] float healthScale = 2f;
 
     private GameManager gameManager;
 
@@ -13,12 +14,12 @@ public class EnemySpawner : MonoBehaviour
         gameManager = FindFirstObjectByType<GameManager>();
     }
 
-    public IEnumerator SpawnEnemy(GameObject enemyPrefab)
+    public IEnumerator SpawnEnemy(GameObject enemyPrefab, int wave)
     {
-        return SpawnEnemyWithWarning(enemyPrefab);
+        return SpawnEnemyWithWarning(enemyPrefab, Mathf.Pow(healthScale, wave - 1));
     }
 
-    private IEnumerator SpawnEnemyWithWarning(GameObject enemyPrefab)
+    private IEnumerator SpawnEnemyWithWarning(GameObject enemyPrefab, float healthScale)
     {
         // Instantiate warning icon
         GameObject warningIcon = Instantiate(warningIconPrefab, transform.position, Quaternion.AngleAxis(90, Vector3.right));
@@ -41,11 +42,15 @@ public class EnemySpawner : MonoBehaviour
         Destroy(warningIcon);
 
         // Spawn the enemy
-        CreateEnemy(enemyPrefab);
+        CreateEnemy(enemyPrefab, healthScale);
     }
 
-    private void CreateEnemy(GameObject enemyPrefab)
+    private void CreateEnemy(GameObject enemyPrefab, float healthScale)
     {
-        Instantiate(enemyPrefab, transform.position, Quaternion.identity);
+        Destructible enemy = Instantiate(enemyPrefab, transform.position, Quaternion.identity).GetComponent<Destructible>();
+        if (enemy != null)
+        {
+            enemy.ScaleHealth(healthScale);
+        }
     }
 }
