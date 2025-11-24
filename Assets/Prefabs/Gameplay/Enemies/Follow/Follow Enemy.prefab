@@ -75,6 +75,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 63df7d0dd81af494fa0a09ec32a9085a, type: 3}
   - {fileID: 8300000, guid: 42158fd0de966964f8ff4621ebb56d91, type: 3}
   explosionSoundVolume: 0.5
+  deathExplosionEffect: {fileID: 8713655309864329798, guid: 251f467c43795054e8d33aaa72d2f686, type: 3}
 --- !u!54 &798185841048452062
 Rigidbody:
   m_ObjectHideFlags: 0
