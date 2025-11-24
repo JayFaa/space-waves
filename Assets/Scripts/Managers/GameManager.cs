@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] GameObject _playerModel;
     [SerializeField] TMPro.TMP_Text tutorialText;
     [SerializeField] PlayerInput movementInput;
     [SerializeField] PlayerInput shootInput;
@@ -86,6 +87,8 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator ResetGameCoroutine()
     {
+        _playerModel.SetActive(false);
+
         // Clean up all interactable game objects except the player
         foreach (var enemy in FindObjectsByType<FollowEnemy>(FindObjectsInactive.Include, FindObjectsSortMode.None))
         {
@@ -104,6 +107,7 @@ public class GameManager : MonoBehaviour
 
         _playerDestructible.UpdateUI();
         _playerTransform.position = Vector3.zero;
+        _playerModel.SetActive(true);
         GameIsResetting = false;
     }
 

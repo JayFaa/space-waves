@@ -20,6 +20,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] SphereCollider shipCollider;
     [SerializeField] SphereCollider lootCollider;
 
+    [SerializeField] CollisionParticleEffect collisionEffect;
+
     // Cached references
     private Rigidbody rb;
     private Destructible playerDestructible;
@@ -148,6 +150,13 @@ public class PlayerMovement : MonoBehaviour
         }
         if (_dealBonusDamage) AudioManager.PlayClipAtPoint(bigCollisionSound, other.contacts[0].point, bigCollisionSoundVolume);
         else PlayCollisionSound(other.contacts[0].point);
+
+        // Trigger collision particle effect
+        if (collisionEffect != null)
+        {
+            Debug.Log("Spawning collision effect");
+            Instantiate(collisionEffect, other.contacts[0].point, Quaternion.LookRotation(other.contacts[0].normal));
+        }
 
         // Reset bonus damage flag even if the thing hit wasn't dealt damage
         _dealBonusDamage = false;

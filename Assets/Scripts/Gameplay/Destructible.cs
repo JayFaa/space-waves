@@ -16,6 +16,9 @@ public class Destructible : MonoBehaviour
     [SerializeField] AudioClip[] explosionSounds;
     [SerializeField] float explosionSoundVolume = .5f;
 
+    [SerializeField] CollisionParticleEffect deathExplosionEffect;
+    [SerializeField] CollisionParticleEffect playerDeathEffect;
+
     // Cached references
     private GameManager gameManager;
     private StatsManager statsManager;
@@ -169,6 +172,7 @@ public class Destructible : MonoBehaviour
             UpdateUI();
             _currentHealth = GetUpgradedMaxHealth();
             _currentShield = GetUpgradedMaxShield();
+            Instantiate(playerDeathEffect, transform.position, Quaternion.identity);
             gameManager.ResetGame();
             waveManager.FailWave();
         }
@@ -232,6 +236,8 @@ public class Destructible : MonoBehaviour
                 AudioClip clip = explosionSounds[Random.Range(0, explosionSounds.Length)];
                 AudioManager.PlayClipAtPoint(clip, transform.position, explosionSoundVolume);
             }
+
+            Instantiate(deathExplosionEffect, transform.position, Quaternion.identity);
 
             GameObject lootSpawner = Instantiate(lootSpawnerPrefab, transform.position, Quaternion.LookRotation(_mostRecentDamageDirection, Vector3.up));
             lootSpawner.GetComponent<LootSpawner>().SpawnLoot(lootPerKill);

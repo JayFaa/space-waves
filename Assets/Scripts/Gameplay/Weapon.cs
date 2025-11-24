@@ -22,11 +22,13 @@ public class Weapon : MonoBehaviour
     // Internal fields
     private bool _isShooting;
     private float _shootCooldownAccumulator;
+    private ParticleSystem _muzzleFlash;
 
     void Awake()
     {
         gameManager = FindFirstObjectByType<GameManager>();
         statsManager = FindFirstObjectByType<StatsManager>();
+        _muzzleFlash = GetComponent<ParticleSystem>();
     }
 
     void Update()
@@ -82,6 +84,7 @@ public class Weapon : MonoBehaviour
                 Quaternion rotation = projectileSpawnPoint.rotation * Quaternion.AngleAxis(angle, Vector3.up);
                 projectile = Instantiate(projectilePrefab, projectileSpawnPoint.position, rotation).GetComponent<Projectile>();
                 projectile.Speed = projectileSpeed;
+                _muzzleFlash.Play();
             }
             
             PlayShootSound();
