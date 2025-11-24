@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0631581c59cefff469167a395a1b8222, type: 3}
   m_Name: DashInvincibility
   m_EditorClassIdentifier: 
-  price: 1000
+  price: 100
   maxPurchases: 1
   iconSprite: {fileID: 21300000, guid: f7b1efd98b7bd2a4dab7ae524c3310ae, type: 3}
   nodeColor: {r: 0.6239237, g: 0.9811321, b: 0.5970096, a: 1}

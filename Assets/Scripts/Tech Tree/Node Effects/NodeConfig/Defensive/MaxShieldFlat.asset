@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0631581c59cefff469167a395a1b8222, type: 3}
   m_Name: MaxShieldFlat
   m_EditorClassIdentifier: 
-  price: 100
+  price: 10
   maxPurchases: 5
   iconSprite: {fileID: 21300000, guid: 644203813a20aee4f85d40663b388ab6, type: 3}
   nodeColor: {r: 0.27803493, g: 0.60410774, b: 0.8301887, a: 1}

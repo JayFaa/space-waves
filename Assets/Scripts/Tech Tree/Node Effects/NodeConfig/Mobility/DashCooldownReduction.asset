@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0631581c59cefff469167a395a1b8222, type: 3}
   m_Name: DashCooldownReduction
   m_EditorClassIdentifier: 
-  price: 250
+  price: 25
   maxPurchases: 3
   iconSprite: {fileID: 21300000, guid: f94ca24639b30e54ba3d09589aff4128, type: 3}
   nodeColor: {r: 0.6239237, g: 0.9811321, b: 0.5970096, a: 1}

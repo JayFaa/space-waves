@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0631581c59cefff469167a395a1b8222, type: 3}
   m_Name: AttackDamageFlat
   m_EditorClassIdentifier: 
-  price: 50
+  price: 5
   maxPurchases: 5
   iconSprite: {fileID: 21300000, guid: c71e9ba4d34c6e247b03e03473da2c14, type: 3}
   nodeColor: {r: 1, g: 0.6556604, b: 0.6556604, a: 1}

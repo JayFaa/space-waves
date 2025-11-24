@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0631581c59cefff469167a395a1b8222, type: 3}
   m_Name: MaxHealthFlat
   m_EditorClassIdentifier: 
-  price: 50
-  maxPurchases: 10
+  price: 5
+  maxPurchases: 9
   iconSprite: {fileID: 21300000, guid: ed9ff75f009651d41b3388b9f82c1bfa, type: 3}
   nodeColor: {r: 0.27803493, g: 0.60410774, b: 0.8301887, a: 1}
   magnitude: 5

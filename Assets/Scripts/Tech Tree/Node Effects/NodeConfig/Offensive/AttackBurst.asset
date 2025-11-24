@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0631581c59cefff469167a395a1b8222, type: 3}
   m_Name: AttackBurst
   m_EditorClassIdentifier: 
-  price: 1000
+  price: 100
   maxPurchases: 1
   iconSprite: {fileID: 21300000, guid: 41fc03711fdddd44ca9830400d63b5d4, type: 3}
   nodeColor: {r: 1, g: 0.6556604, b: 0.6556604, a: 1}
