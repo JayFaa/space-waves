@@ -82,6 +82,7 @@ public class WaveManager : MonoBehaviour
                 3 => WaveBaseCoroutine(WaveThree()),
                 4 => WaveBaseCoroutine(WaveFour()),
                 5 => WaveBaseCoroutine(WaveFive()),
+                6 => WaveBaseCoroutine(WaveSix()),
                 _ => GameCompleteCoroutine(),
             }
         );
@@ -161,6 +162,24 @@ public class WaveManager : MonoBehaviour
         yield return PatternWave(_outerCircleSpawners.ToList(), _innerCircleSpawners.ToList(), waves: 1, timeBetweenWaves: 5f, waitAfterLastSpawn: false);
     }
 
+    private IEnumerator WaveSix()
+    {
+        // A random mix of enemies from all spawn points
+        List<EnemySpawner> spawners = new List<EnemySpawner>();
+        spawners.AddRange(_middleCircleSpawners);
+        spawners.AddRange(_innerCircleSpawners);
+        spawners.AddRange(_outerSquareHalfSpawners);
+        spawners.AddRange(_innerSquareSpawners);
+        spawners.AddRange(_centerSpawners);
+
+        yield return RandomMobWave(spawners, followEnemyWeight: 0.8f, snakeEnemyWeight: 0.2f, waves: 5, timeBetweenWaves: 9f);
+    }
+
+    private Coroutine SpawnEnemyCoroutine(GameObject enemyPrefab, EnemySpawner spawner, int wave)
+    {
+        return StartCoroutine(spawner.SpawnEnemy(enemyPrefab, wave));
+    }
+
     private IEnumerator PatternWave(List<EnemySpawner> followEnemySpawners, List<EnemySpawner> snakeEnemySpawners, int waves, float timeBetweenWaves, bool waitAfterLastSpawn=true)
     {
         List<Coroutine> spawnCoroutines = new List<Coroutine>();
@@ -169,11 +188,11 @@ public class WaveManager : MonoBehaviour
             // Spawn enemies at random spawn points
             foreach (var spawner in followEnemySpawners)
             {
-                spawnCoroutines.Add(StartCoroutine(spawner.SpawnEnemy(followEnemyPrefab)));
+                spawnCoroutines.Add(SpawnEnemyCoroutine(followEnemyPrefab, spawner, _currentWave));
             }
             foreach (var spawner in snakeEnemySpawners)
             {
-                spawnCoroutines.Add(StartCoroutine(spawner.SpawnEnemy(snakeEnemyPrefab)));
+                spawnCoroutines.Add(SpawnEnemyCoroutine(snakeEnemyPrefab, spawner, _currentWave));
             }
 
             // Wait for all spawns to complete
@@ -198,7 +217,7 @@ public class WaveManager : MonoBehaviour
             {
                 float roll = Random.Range(0f, followEnemyWeight + snakeEnemyWeight);
                 GameObject enemyPrefab = roll <= followEnemyWeight ? followEnemyPrefab : snakeEnemyPrefab;
-                spawnCoroutines.Add(StartCoroutine(spawner.SpawnEnemy(enemyPrefab)));
+                spawnCoroutines.Add(SpawnEnemyCoroutine(enemyPrefab, spawner, _currentWave));
             }
 
             // Wait for all spawns to complete
@@ -217,10 +236,10 @@ public class WaveManager : MonoBehaviour
     {
         // Disable and update wave title text
         waveTitleText.gameObject.SetActive(false);
-        waveTitleText.text = $"Wave {_currentWave}";
+        waveTitleText.text = _currentWave == 6 ? "Final Wave" : $"Wave {_currentWave}";
 
         // Show center screen wave intro text
-        centerScreenText.text = $"Wave {_currentWave}";
+        centerScreenText.text = _currentWave == 6 ? "Final Wave" : $"Wave {_currentWave}";
         centerScreenText.gameObject.SetActive(true);
 
         yield return new WaitForSeconds(waveIntroTime);
@@ -236,7 +255,7 @@ public class WaveManager : MonoBehaviour
     {
         Debug.Log($"Wave {_currentWave} complete!");
 
-        centerScreenText.text = $"Wave {_currentWave} Complete!";
+        centerScreenText.text = _currentWave == 6 ? "Final Wave Complete!" : $"Wave {_currentWave} Complete!";
         centerScreenText.gameObject.SetActive(true);
 
         yield return new WaitForSeconds(2f);

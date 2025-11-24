@@ -24,7 +24,6 @@ public class Destructible : MonoBehaviour
     private StatsManager statsManager;
     private ShipUIManager uiManager;
     private WaveManager waveManager;
-    private AudioManager musicManager;
 
     private int _currentShield;
     private int _currentHealth;
@@ -44,7 +43,6 @@ public class Destructible : MonoBehaviour
         statsManager = FindFirstObjectByType<StatsManager>();
         uiManager = FindFirstObjectByType<ShipUIManager>();
         waveManager = FindFirstObjectByType<WaveManager>();
-        musicManager = FindFirstObjectByType<AudioManager>();
     }
 
     void Start()
@@ -60,6 +58,13 @@ public class Destructible : MonoBehaviour
         if (hasShield) RechargeShield();
         RechargeHealth();
         UpdateInvincibility();
+    }
+
+    public void ScaleHealth(float scale)
+    {
+        Debug.Log($"Scaling health of {gameObject.name} by {scale}. Original max health: {maxHealth} New max health: {Mathf.CeilToInt(maxHealth * scale)}");
+        maxHealth = Mathf.CeilToInt(maxHealth * scale);
+        _currentHealth = maxHealth;
     }
 
     private void UpdateInvincibility()
