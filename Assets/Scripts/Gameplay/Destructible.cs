@@ -13,11 +13,15 @@ public class Destructible : MonoBehaviour
     [SerializeField] GameObject lootSpawnerPrefab;
     [SerializeField] int lootPerKill = 5;
 
+    [SerializeField] AudioClip[] explosionSounds;
+    [SerializeField] float explosionSoundVolume = .5f;
+
     // Cached references
     private GameManager gameManager;
     private StatsManager statsManager;
     private ShipUIManager uiManager;
     private WaveManager waveManager;
+    private AudioManager musicManager;
 
     private int _currentShield;
     private int _currentHealth;
@@ -37,6 +41,7 @@ public class Destructible : MonoBehaviour
         statsManager = FindFirstObjectByType<StatsManager>();
         uiManager = FindFirstObjectByType<ShipUIManager>();
         waveManager = FindFirstObjectByType<WaveManager>();
+        musicManager = FindFirstObjectByType<AudioManager>();
     }
 
     void Start()
@@ -219,9 +224,15 @@ public class Destructible : MonoBehaviour
 
     void OnDestroy()
     {
-        // Spawn loot if an enemy dies
+        // Spawn loot and play sound if an enemy dies during a round
         if (!_quitting && !gameManager.GameIsResetting && lootSpawnerPrefab != null)
         {
+            if (explosionSounds.Length > 0)
+            {
+                AudioClip clip = explosionSounds[Random.Range(0, explosionSounds.Length)];
+                AudioManager.PlayClipAtPoint(clip, transform.position, explosionSoundVolume);
+            }
+
             GameObject lootSpawner = Instantiate(lootSpawnerPrefab, transform.position, Quaternion.LookRotation(_mostRecentDamageDirection, Vector3.up));
             lootSpawner.GetComponent<LootSpawner>().SpawnLoot(lootPerKill);
             Destroy(lootSpawner, 1f);

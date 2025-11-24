@@ -3,6 +3,8 @@ using UnityEngine;
 public class LootChunk : MonoBehaviour
 {
     [SerializeField] float accelerationTowardsMiddle = 2f;
+    [SerializeField] AudioClip collectSound;
+    [SerializeField] float collectSoundVolume = 0.7f;
 
     private GameManager gameManager;
     private ResourceManager resourceManager;
@@ -41,6 +43,7 @@ public class LootChunk : MonoBehaviour
     {
         resourceManager.AddGold(1);
         Debug.Log($"Collected loot! Total gold: {resourceManager.GoldCount}");
+        AudioManager.PlayClipAtPoint(collectSound, transform.position, collectSoundVolume);
         Destroy(gameObject);
     }
 }

@@ -70,6 +70,11 @@ MonoBehaviour:
   shieldRegenRate: 0
   lootSpawnerPrefab: {fileID: 3708074448457716266, guid: a414675ea5ecdd3419052dac843ed26c, type: 3}
   lootPerKill: 5
+  explosionSounds:
+  - {fileID: 8300000, guid: d6d43cb4d9747424e8e3cc0502210b1a, type: 3}
+  - {fileID: 8300000, guid: 63df7d0dd81af494fa0a09ec32a9085a, type: 3}
+  - {fileID: 8300000, guid: 42158fd0de966964f8ff4621ebb56d91, type: 3}
+  explosionSoundVolume: 0.5
 --- !u!54 &798185841048452062
 Rigidbody:
   m_ObjectHideFlags: 0
