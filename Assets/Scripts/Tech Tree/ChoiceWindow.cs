@@ -35,6 +35,7 @@ public class ChoiceWindow : MonoBehaviour
     public void MakeChoice(PurchaseableNode chosenEffect)
     {
         _changingNode.SetNodeEffect(chosenEffect);
+        SetDescription("");
         gameObject.SetActive(false);
     }
 }
