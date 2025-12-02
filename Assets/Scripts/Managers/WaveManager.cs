@@ -41,6 +41,7 @@ public class WaveManager : MonoBehaviour
     private List<EnemySpawner> _centerSpawners;
 
     private int _currentWave = 0;
+    private Coroutine _currentWaveCoroutine;
     private bool _waveStarted = false;
 
     void Awake()
@@ -74,7 +75,7 @@ public class WaveManager : MonoBehaviour
         _waveStarted = true;
 
         // If a wave is not active, start whichever one we're on
-        StartCoroutine(_currentWave switch
+        _currentWaveCoroutine = StartCoroutine(_currentWave switch
             {
                 0 => WaveZero(), // Wave zero can be used for tutorial time before enemies spawn
                 1 => WaveBaseCoroutine(WaveOne()),
@@ -346,7 +347,11 @@ public class WaveManager : MonoBehaviour
 
     public void FailWave()
     {
-        StopAllCoroutines();
+        if (_currentWaveCoroutine != null)
+        {
+            StopCoroutine(_currentWaveCoroutine);
+            _currentWaveCoroutine = null;
+        }
         StartCoroutine(WaveFailedCoroutine());
     }
 

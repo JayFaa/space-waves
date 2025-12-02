@@ -28,6 +28,14 @@ public class EnemySpawner : MonoBehaviour
         float elapsedTime = 0f;
         while (elapsedTime < warningDuration)
         {
+            // If a wave is reset, make sure the warning icons get cleaned up before exiting
+            if (gameManager.GameIsResetting)
+            {
+                Destroy(warningIcon);
+                yield break;
+            }
+
+            // Do not progress the timer if the game is paused
             if (!gameManager.GameIsActive)
             {
                 yield return null;
