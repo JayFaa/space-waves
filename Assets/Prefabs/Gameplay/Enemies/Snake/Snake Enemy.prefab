@@ -143,8 +143,8 @@ MonoBehaviour:
   turningRate: 100
   directionChangeIntervalMin: 2
   directionChangeIntervalMax: 4
-  startColor: {r: 0, g: 0.41509432, b: 0, a: 1}
-  endColor: {r: 0.7574953, g: 1, b: 0.7311321, a: 1}
+  startColor: {r: 0, g: 0.6415094, b: 0, a: 1}
+  endColor: {r: 0.9279464, g: 1, b: 0.9198113, a: 1}
   startSize: 1
   endSize: 0.4
 --- !u!114 &8823379328718778236
